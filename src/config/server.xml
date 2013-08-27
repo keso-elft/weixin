@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<server>
+	<service>
+		<service-name>joinChannel</service-name>
+		<service-timeout>0</service-timeout>
+		<service-priority>9</service-priority>
+		<step no="1">
+			<choise successMsg="最新的比赛结果:\n[list]">
+				<filter-chain>
+					<filter>
+						<filter-type>com.weixin.server.filter.filters.KeyWordFilter</filter-type>
+						<filter-para><![CDATA[结果,新闻,昨天,最近]]></filter-para>
+					</filter>
+				</filter-chain>
+				<processor>com.barrage.processor.Test1</processor>
+			</choise>
+		</step>
+	</service>
+	
+	<service>
+		<service-name>quitChannel</service-name>
+		<service-timeout>0</service-timeout>
+		<service-priority>9</service-priority>
+		<step no="1">
+			<choise successMsg="目前正在进行的直播:\n[list],\n如需收看请回复数字" toNo="2">
+				<filter-chain>
+					<filter>
+						<filter-type>com.weixin.server.filter.filters.KeyWordFilter</filter-type>
+						<filter-para><![CDATA[目前,直播,频道,比赛]]></filter-para>
+					</filter>
+				</filter-chain>
+				<processor>com.barrage.processor.Test2</processor>
+			</choise>
+		</step>
+		<step no="2">
+			<choise successMsg="您已经加入了[content]的直播">
+				<filter-chain>
+					<filter>
+						<filter-type>com.weixin.server.filter.filters.NumFilter</filter-type>
+						<filter-para>1</filter-para>
+					</filter>
+				</filter-chain>
+				<processor>com.barrage.processor.Test3</processor>
+				<success-msg><![CDATA[您已经加入了[content]的直播]]></success-msg>
+			</choise>
+		</step>
+	</service>
+	
+	<active-service>
+		<service-name>liveNotify</service-name>
+		<service-timeout>120</service-timeout>
+		<service-priority>9</service-priority>
+		<service-send-message><![CDATA[[content]的直播已经开始，如需收看请回复 加入]]></service-send-message>
+		<step no="1">
+			<choise toService="living">
+				<filter-chain>
+					<filter>
+						<filter-type>com.weixin.server.filter.filters.KeyWordFilter</filter-type>
+						<filter-para><![CDATA[参加,加入,收看]]></filter-para>
+					</filter>
+				</filter-chain>
+				<processor>com.barrage.processor.Test4</processor>
+			</choise>
+			<choise>
+				<filter-chain>
+					<filter>
+						<filter-type>com.weixin.server.filter.filters.KeyWordFilter</filter-type>
+						<filter-para><![CDATA[不,不参加,不看]]></filter-para>
+					</filter>
+				</filter-chain>
+			</choise>
+		</step>
+	</active-service>
+	
+	<active-service>
+		<service-name>living</service-name>
+		<service-timeout>0</service-timeout>
+		<service-priority>9</service-priority>
+		<service-send-message><![CDATA[正为你播报比赛[content]]]></service-send-message>
+		<sub-service-list>
+			<service>
+				<service-name>quitLiving</service-name>
+				<service-timeout>0</service-timeout>
+				<service-priority>9</service-priority>
+				<step no="1">
+					<choise toService="advise">
+						<filter-chain>
+							<filter>
+								<filter-type>com.weixin.server.filter.filters.KeyWordFilter</filter-type>
+								<filter-para><![CDATA[退出]]></filter-para>
+							</filter>
+						</filter-chain>
+						<processor>com.barrage.processor.Test5</processor>
+					</choise>
+				</step>
+			</service>
+		</sub-service-list>
+	</active-service>
+	
+	<active-service>
+		<service-name>advise</service-name>
+		<service-timeout>120</service-timeout>
+		<service-priority>9</service-priority>
+		<service-send-message><![CDATA[感谢您的收看，欢迎回复您的建议给我们]]></service-send-message>
+		<step no="1">
+			<choise successMsg="非常谢谢您的建议，我们会认真考虑并改善用户体验">
+				<processor>com.barrage.processor.Test6</processor>
+			</choise>
+		</step>
+	</active-service>
+</server>

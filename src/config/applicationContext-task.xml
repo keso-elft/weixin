@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.directwebremoting.org/schema/spring-dwr http://www.directwebremoting.org/schema/spring-dwr-2.0.xsd">
+
+	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!--<ref local="matchDetectJob" /> -->
+			</list> 
+		</property>
+	</bean>
+
+	<!--
+			<bean name="matchDetectTask" class="com.weixin.send.task.MatchDetectTask">
+				<property name="matchManager" ref="matchManager" />
+				<property name="sessionManager" ref="sessionManager" />
+				<property name="userManager" ref="userManager" />
+				<property name="weixinSender" ref="weixinSender" />
+			</bean>
+
+		<bean id="matchDetectJob" class="org.springframework.scheduling.quartz.CronTriggerBean">
+			<property name="jobDetail">
+				<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+					<property name="targetObject" ref="matchDetectTask" />
+					<property name="targetMethod" value="detecting" />
+				</bean>
+			</property>
+			<property name="cronExpression" value="0 0/1 * * * ?" />
+		</bean>
+		-->
+</beans>
