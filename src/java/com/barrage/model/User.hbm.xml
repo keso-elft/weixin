@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.weixin.common.WeiXinFans" table="user"
+		dynamic-update="true" dynamic-insert="true">
+
+		<id name="id" type="java.lang.Long" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="fromUserName" type="java.lang.String" column="from_user_name" />
+
+		<property name="fakeId" type="java.lang.String" column="fake_id" />
+
+		<property name="nickName" type="java.lang.String" column="nick_name" />
+
+		<property name="remarkName" type="java.lang.String" column="remark_name" />
+
+		<property name="groupId" type="java.lang.Long" column="group_id" />
+
+		<property name="lastAccessedTime" type="java.util.Date"
+			column="last_accessed_time" />
+
+	</class>
+</hibernate-mapping>

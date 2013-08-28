@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.barrage.model.Channel" table="channel"
+		dynamic-update="true" dynamic-insert="true">
+
+		<id name="id" type="java.lang.Long" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="name" type="java.lang.String" column="name" />
+
+		<property name="desc" type="java.lang.String" column="desc" />
+
+		<property name="createUserId" type="java.lang.Long" column="create_user_id" />
+
+		<property name="createTime" type="java.util.Date" column="create_time" />
+
+		<property name="status" type="java.lang.Long" column="status" />
+
+		<property name="isStore" type="java.lang.Long" column="is_store" />
+
+		<property name="endTime" type="java.util.Date" column="end_time" />
+
+		<property name="outputType" type="java.lang.Long" column="output_type" />
+
+	</class>
+</hibernate-mapping>
