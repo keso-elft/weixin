@@ -14,7 +14,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.weixin.common.WeiXinFans;
 import com.weixin.common.WeiXinFansManager;
-import com.weixin.httpsend.WeixinSender;
+import com.weixin.httpsend.WeixinHttpSender;
 import com.weixin.server.message.request.InMessage;
 import com.weixin.server.message.response.OutMessage;
 import com.weixin.server.model.Result;
@@ -34,7 +34,7 @@ public class Server {
 
 	public WeiXinFansManager userManager;
 
-	private WeixinSender sender;
+	private WeixinHttpSender sender;
 
 	/**
 	 * 服务器初始化
@@ -48,7 +48,7 @@ public class Server {
 		sessionManager = (SessionManager) context.getBean("sessionManager");
 		userManager = (WeiXinFansManager) context.getBean("userManager");
 
-		sender = new WeixinSender();
+		sender = new WeixinHttpSender();
 		sender.start();
 
 		Collection<Service> services = serviceManager.getServices();

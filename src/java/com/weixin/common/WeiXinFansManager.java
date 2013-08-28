@@ -1,6 +1,8 @@
 package com.weixin.common;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,6 +41,12 @@ public class WeiXinFansManager {
 			userMap.put(fromUserName, user);
 		}
 		return user;
+	}
+
+	public synchronized List<WeiXinFans> getValidUsers() {
+		List<WeiXinFans> list = new ArrayList<WeiXinFans>();
+		list.addAll(userMap.values());
+		return list;
 	}
 
 	/**

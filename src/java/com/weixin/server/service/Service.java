@@ -67,6 +67,8 @@ public class Service {
 	 * 服务按指定步骤执行
 	 */
 	public Result doService(InMessage req, String stepNo) {
+		if (stepNo == null)
+			stepNo = _startNo;
 		ServiceStep step = stepMap == null ? null : stepMap.get(stepNo);
 		if (step != null)
 			return step.doStep(req);

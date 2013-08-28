@@ -3,7 +3,6 @@ package com.weixin.common;
 import java.util.Date;
 
 /**
- * @author Administrator
  *	用户
  */
 public class WeiXinFans {

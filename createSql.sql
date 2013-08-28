@@ -1,59 +1,44 @@
-DROP TABLE IF EXISTS `dota2live`.`advice`;
-CREATE TABLE  `dota2live`.`advice` (
-  `id` int(10) unsigned NOT NULL,
-  `user_id` int(10) unsigned NOT NULL,
-  `content` varchar(100) NOT NULL,
+CREATE TABLE `channel` (
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `desc` VARCHAR(200),
+  `create_user_id` INTEGER UNSIGNED NOT NULL,
+  `create_time` DATETIME NOT NULL,
+  `status` INTEGER UNSIGNED NOT NULL,
+  `is_store` INTEGER UNSIGNED NOT NULL DEFAULT 0,
+  `end_time` DATETIME,
+  `output_type` INTEGER UNSIGNED NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)
+ENGINE = InnoDB;
 
-
-DROP TABLE IF EXISTS `dota2live`.`live`;
-CREATE TABLE  `dota2live`.`live` (
-  `id` int(10) unsigned NOT NULL,
-  `match_id` int(10) unsigned NOT NULL,
-  `progress` varchar(100) NOT NULL,
-  `time` datetime NOT NULL,
+CREATE TABLE `store_message` (
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INTEGER UNSIGNED NOT NULL,
+  `channel_id` INTEGER UNSIGNED NOT NULL,
+  `content` VARCHAR(300) NOT NULL,
+  `send_time` DATETIME NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)
+ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS `dota2live`.`live_member`;
-CREATE TABLE  `dota2live`.`live_member` (
-  `id` int(10) unsigned NOT NULL,
-  `match_id` int(10) unsigned NOT NULL,
-  `user_id` int(10) unsigned NOT NULL,
-  `time` datetime NOT NULL,
-  `is_quit` varchar(45) NOT NULL DEFAULT '0' COMMENT '0:not quit ,1:quit',
+CREATE TABLE `user_channel_relation` (
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `userId` INTEGER UNSIGNED NOT NULL,
+  `channelId` INTEGER UNSIGNED NOT NULL,
+  `status` INTEGER UNSIGNED NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)
+ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS `dota2live`.`matches`;
-CREATE TABLE  `dota2live`.`matches` (
-  `id` int(10) unsigned NOT NULL,
-  `name` varchar(36) NOT NULL,
-  `narrator` varchar(36) NOT NULL,
-  `url` varchar(100) NOT NULL,
-  `score` varchar(36) DEFAULT NULL,
-  `start_time` datetime NOT NULL,
-  `is_live` int(11) NOT NULL,
+CREATE TABLE `user` (
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `from_user_name` VARCHAR(20) NOT NULL,
+  `fake_id` VARCHAR(45),
+  `nickName` VARCHAR(45),
+  `remarkName` VARCHAR(45),
+  `groupId` INTEGER UNSIGNED,
+  `lastAccessedTime` DATETIME NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `dota2live`.`news`;
-CREATE TABLE  `dota2live`.`news` (
-  `id` int(10) unsigned NOT NULL,
-  `content` varchar(200) NOT NULL,
-  `news_date` date NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `dota2live`.`user`;
-CREATE TABLE  `dota2live`.`user` (
-  `id` int(10) unsigned NOT NULL,
-  `from_user_name` varchar(45) NOT NULL,
-  `remark_name` varchar(45) DEFAULT NULL,
-  `nick_name` varchar(45) DEFAULT NULL,
-  `fake_id` varchar(45) DEFAULT NULL,
-  `group_id` int(10) unsigned zerofill DEFAULT NULL,
-  `last_login_time` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)
+ENGINE = InnoDB;

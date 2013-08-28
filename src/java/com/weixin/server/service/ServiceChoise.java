@@ -58,7 +58,7 @@ public class ServiceChoise {
 	 */
 	public Result doChoise(InMessage msg) {
 		Result result = null;
-		if (chain.doFilter(msg)) {
+		if (chain == null || chain.doFilter(msg)) {
 			result = new Result();
 			if (processor != null)
 				result.setMessage(createMessage(processor.process(msg)));
