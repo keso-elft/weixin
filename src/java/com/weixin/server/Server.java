@@ -34,7 +34,7 @@ public class Server {
 
 	public WeiXinFansManager userManager;
 
-	private WeixinHttpSender sender;
+	private WeixinHttpSender weixinSender;
 
 	/**
 	 * 服务器初始化
@@ -46,10 +46,10 @@ public class Server {
 
 		serviceManager = ServiceManager.getInstance();
 		sessionManager = (SessionManager) context.getBean("sessionManager");
-		userManager = (WeiXinFansManager) context.getBean("userManager");
+		userManager = (WeiXinFansManager) context.getBean("fansManager");
 
-		sender = new WeixinHttpSender();
-		sender.start();
+		weixinSender = (WeixinHttpSender) context.getBean("weixinSender");
+		weixinSender.start();
 
 		Collection<Service> services = serviceManager.getServices();
 		for (Service service : services) {
@@ -78,20 +78,23 @@ public class Server {
 		Session session = sessionManager.getSession(fromUserName);
 
 		Service service = null;
-		// 在长期service中查询
-		for (Service temp : serviceManager.getCommonServices()) {
-			service = temp;
-			result = service.doService(in);
-			if (result != null)
-				break;
-		}
-		// 在session保存的上一次进度中查询
-		if (result == null && session.getServiceName() != null) {
+		// 先在session保存的上一次进度中查询
+		if (session.getServiceName() != null) {
 			service = serviceManager.getService(session.getServiceName());
 			if (service != null) {
 				result = service.doService(in, session.getStepNo());
 			}
 		}
+		// 在长期service中查询
+		if (result == null) {
+			for (Service temp : serviceManager.getCommonServices()) {
+				service = temp;
+				result = service.doService(in);
+				if (result != null)
+					break;
+			}
+		}
+
 		if (result != null && result.getResultCode() == Result.RESULT_SUCCESS) {
 			// 判断result
 			// 判断stepNo前进
@@ -103,11 +106,23 @@ public class Server {
 
 			// 消息返回
 			OutMessage out = result.getMessage();
-			out.setCreateTime(new Date().getTime());
-			out.setToUserName(in.getFromUserName());
-			out.setFromUserName(in.getToUserName());
+			if (out != null) {
+				out.setCreateTime(new Date().getTime());
+				out.setToUserName(in.getFromUserName());
+				out.setFromUserName(in.getToUserName());
 
-			WeixinTools.printOutMessage(out, httpResp);
+				WeixinTools.printOutMessage(out, httpResp);
+			}
+		} else if (result != null && result.getResultCode() == Result.RESULT_RETRY) {
+			// 消息返回
+			OutMessage out = result.getMessage();
+			if (out != null) {
+				out.setCreateTime(new Date().getTime());
+				out.setToUserName(in.getFromUserName());
+				out.setFromUserName(in.getToUserName());
+
+				WeixinTools.printOutMessage(out, httpResp);
+			}
 		} else {
 			// TODO 未处理消息
 			log.info("no service enter");

@@ -7,6 +7,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.weixin.server.filter.FilterChain;
 import com.weixin.server.message.request.InMessage;
 import com.weixin.server.message.response.OutMessage;
+import com.weixin.server.model.ProcessError;
 import com.weixin.server.model.Result;
 import com.weixin.server.processor.Processor;
 
@@ -60,13 +61,24 @@ public class ServiceChoise {
 		Result result = null;
 		if (chain == null || chain.doFilter(msg)) {
 			result = new Result();
-			if (processor != null)
+
+			boolean isError = false;
+
+			if (processor != null) {
+				Object rtnObj = processor.process(msg);
+				if (rtnObj instanceof ProcessError) {
+					isError = true;
+				}
 				result.setMessage(createMessage(processor.process(msg)));
-			else
+			} else
 				result.setMessage(createMessage(successMsg));
-			result.setStepNo(toNo);
-			result.setServiceName(toService);
-			result.setResultCode(Result.RESULT_SUCCESS);
+
+			if (!isError) {
+				result.setStepNo(toNo);
+				result.setServiceName(toService);
+				result.setResultCode(Result.RESULT_SUCCESS);
+			} else
+				result.setResultCode(Result.RESULT_RETRY);
 		}
 		return result;
 	}
@@ -85,7 +97,8 @@ public class ServiceChoise {
 			content = successMsg;
 		} else {
 			Service service = ServiceManager.getInstance().getService(toService);
-			content = service.getServiceSendMessage();
+			if (service != null)
+				content = service.getServiceSendMessage();
 		}
 		if (content == null)
 			return null;
@@ -100,6 +113,9 @@ public class ServiceChoise {
 			message.setContent(content.replace("[list]", temp));
 		} else if (retObject instanceof String) {
 			message.setContent(content.replace("[content]", retObject.toString()));
+		} else if (retObject instanceof ProcessError) {
+			ProcessError retError = (ProcessError) retObject;
+			message.setContent(retError.getErrorMsg());
 		} else {
 			message.setContent(content);
 		}

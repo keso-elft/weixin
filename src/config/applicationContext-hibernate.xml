@@ -8,7 +8,10 @@
 		<property name="mappingResources">
 			<list>
 				<!-- hbm.xml  -->
-				<!--<value>com/common/model/Advice.hbm.xml</value>-->
+				<value>com/barrage/model/Channel.hbm.xml</value>
+				<value>com/barrage/model/StoreMessage.hbm.xml</value>
+				<value>com/barrage/model/User.hbm.xml</value>
+				<value>com/barrage/model/UserChannelRelation.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -38,5 +41,9 @@
 	</bean>
 	
 	<!-- dao  -->
-	<!--<bean id="adviceDao" class="com.common.dao.hibernate.AdviceDaoHibernate" autowire="byName"/>-->
+	<bean id="channelDao" class="com.barrage.dao.hibernate.ChannelHibernate" autowire="byName"/>
+	<bean id="storeMessageDao" class="com.barrage.dao.hibernate.StoreMessageHibernate" autowire="byName"/>
+	<bean id="userChannelRelationDao" class="com.barrage.dao.hibernate.UserChannelRelationHibernate" autowire="byName"/>
+	<bean id="userDao" class="com.barrage.dao.hibernate.UserHibernate" autowire="byName"/>
+	
 </beans>

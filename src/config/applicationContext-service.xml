@@ -7,14 +7,28 @@
 	
 	<!-- manager  -->
 	
-	<!--<bean id="adviceManager" class="com.common.service.impl.AdviceManagerImpl">
-			<property name="adviceDao" ref="adviceDao"/>
-		</bean>-->
-	
 	<bean id="sessionManager" class="com.weixin.server.session.SessionManager" scope="singleton"/>
 	
-	<bean name="weixinSender" class="com.weixin.httpsend.WeixinSender" scope="singleton"/>
+	<bean id="weixinSender" class="com.weixin.httpsend.WeixinHttpSender" scope="singleton"/>
 	
-	<bean name="userManager" class="com.weixin.common.WeiXinFansManager" scope="singleton"/>
+	<bean id="fansManager" class="com.weixin.common.WeiXinFansManager" scope="singleton"/>
+	
+	<!-- db manager  -->
+	
+	<bean id="channelManager" class="com.barrage.service.impl.ChannelManagerImpl">
+		<property name="channelDao" ref="channelDao"/>
+	</bean>
+	
+	<bean id="storeMessageManager" class="com.barrage.service.impl.StoreMessageManagerImpl">
+		<property name="storeMessageDao" ref="storeMessageDao"/>
+	</bean>
+	
+	<bean id="userChannelRelationManager" class="com.barrage.service.impl.UserChannelRelationManagerImpl">
+		<property name="userChannelRelationDao" ref="userChannelRelationDao"/>
+	</bean>
+	
+	<bean id="userManager" class="com.barrage.service.impl.UserManagerImpl">
+		<property name="userDao" ref="userDao"/>
+	</bean>
 	
 </beans>

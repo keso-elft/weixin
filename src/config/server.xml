@@ -7,11 +7,11 @@
 			<choise successMsg="频道创建成功,频道号为[content]">
 				<filter-chain>
 					<filter>
-						<filter-type>com.weixin.server.filter.filters.KeyWordFilter</filter-type>
+						<filter-type>com.barrage.filter.BarrageFilter</filter-type>
 						<filter-para><![CDATA[创建频道 [title] [password]]]></filter-para>
 					</filter>
 				</filter-chain>
-				<processor>com.barrage.processor.CreateChannelProcesser</processor>
+				<processor>com.barrage.processer.CreateChannelProcesser</processor>
 			</choise>
 		</step>
 	</service>
@@ -22,11 +22,11 @@
 			<choise successMsg="频道加入成功,请随意发言">
 				<filter-chain>
 					<filter>
-						<filter-type>com.weixin.server.filter.filters.KeyWordFilter</filter-type>
+						<filter-type>com.barrage.filter.BarrageFilter</filter-type>
 						<filter-para><![CDATA[加入频道 [no] [password]]]></filter-para>
 					</filter>
 				</filter-chain>
-				<processor>com.barrage.processor.JoinChannelProcesser</processor>
+				<processor>com.barrage.processer.JoinChannelProcesser</processor>
 			</choise>
 		</step>
 	</service>
@@ -37,7 +37,7 @@
 			<choise successMsg="是否确认退出频道,确认请回复'是'" toNo="2">
 				<filter-chain>
 					<filter>
-						<filter-type>com.weixin.server.filter.filters.KeyWordFilter</filter-type>
+						<filter-type>com.barrage.filter.BarrageFilter</filter-type>
 						<filter-para><![CDATA[退出频道]]></filter-para>
 					</filter>
 				</filter-chain>
@@ -47,11 +47,11 @@
 			<choise successMsg="已退出该群">
 				<filter-chain>
 					<filter>
-						<filter-type>com.weixin.server.filter.filters.KeyWordFilter</filter-type>
+						<filter-type>com.barrage.filter.BarrageFilter</filter-type>
 						<filter-para><![CDATA[是]]></filter-para>
 					</filter>
 				</filter-chain>
-				<processor>com.barrage.processor.QuitChannelProcesser</processor>
+				<processor>com.barrage.processer.QuitChannelProcesser</processor>
 			</choise>
 		</step>
 	</service>
@@ -66,7 +66,7 @@
 						<filter-para></filter-para>
 					</filter>
 				</filter-chain>
-				<processor>com.barrage.processor.TalkChannelProcesser</processor>
+				<processor>com.barrage.processer.TalkChannelProcesser</processor>
 			</choise>
 		</step>
 	</service>

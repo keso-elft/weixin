@@ -14,6 +14,8 @@
 
 		<property name="name" type="java.lang.String" column="name" />
 
+		<property name="password" type="java.lang.String" column="password" />
+
 		<property name="desc" type="java.lang.String" column="desc" />
 
 		<property name="createUserId" type="java.lang.Long" column="create_user_id" />

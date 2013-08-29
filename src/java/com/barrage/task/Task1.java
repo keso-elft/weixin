@@ -18,14 +18,14 @@ public class Task1 {
 
 	SessionManager sessionManager;
 
-	WeiXinFansManager userManager;
+	WeiXinFansManager fansManager;
 
 	WeixinHttpSender weixinSender;
 
 	public void run() {
 
-		userManager.accessUser("1000");
-		List<WeiXinFans> users = userManager.getValidUsers();
+		fansManager.accessUser("1000");
+		List<WeiXinFans> users = fansManager.getValidUsers();
 
 		for (WeiXinFans user : users) {
 			// 发送
@@ -49,20 +49,20 @@ public class Task1 {
 		this.sessionManager = sessionManager;
 	}
 
-	public WeiXinFansManager getUserManager() {
-		return userManager;
-	}
-
-	public void setUserManager(WeiXinFansManager userManager) {
-		this.userManager = userManager;
-	}
-
 	public WeixinHttpSender getWeixinSender() {
 		return weixinSender;
 	}
 
 	public void setWeixinSender(WeixinHttpSender weixinSender) {
 		this.weixinSender = weixinSender;
+	}
+
+	public WeiXinFansManager getFansManager() {
+		return fansManager;
+	}
+
+	public void setFansManager(WeiXinFansManager fansManager) {
+		this.fansManager = fansManager;
 	}
 
 }

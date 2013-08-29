@@ -1,6 +1,7 @@
 CREATE TABLE `channel` (
   `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45),
   `desc` VARCHAR(200),
   `create_user_id` INTEGER UNSIGNED NOT NULL,
   `create_time` DATETIME NOT NULL,

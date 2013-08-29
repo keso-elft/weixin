@@ -2,7 +2,7 @@ package com.weixin.server.service;
 
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.digester.Digester;
@@ -153,7 +153,7 @@ public class ServiceManager {
 	 */
 	public void addCommonService(Service service) throws Exception {
 		if (commonServiceMap == null)
-			commonServiceMap = new HashMap<String, Service>();
+			commonServiceMap = new LinkedHashMap<String, Service>();
 		commonServiceMap.put(service.getServiceName(), service);
 	}
 
@@ -163,7 +163,7 @@ public class ServiceManager {
 	 */
 	public void addActiveService(Service service) {
 		if (activeServiceMap == null)
-			activeServiceMap = new HashMap<String, Service>();
+			activeServiceMap = new LinkedHashMap<String, Service>();
 		activeServiceMap.put(service.getServiceName(), service);
 	}
 
@@ -180,9 +180,10 @@ public class ServiceManager {
 	 * @return
 	 */
 	public Collection<Service> getServices() {
-		Map<String, Service> result = new HashMap<String, Service>();
+		Map<String, Service> result = new LinkedHashMap<String, Service>();
 		result.putAll(commonServiceMap);
-		result.putAll(activeServiceMap);
+		if (activeServiceMap != null)
+			result.putAll(activeServiceMap);
 		return result.values();
 	}
 
@@ -193,7 +194,7 @@ public class ServiceManager {
 	 */
 	public Service getService(String serviceType) {
 		Service service = commonServiceMap.get(serviceType);
-		if (service == null)
+		if (service == null && activeServiceMap != null)
 			service = activeServiceMap.get(serviceType);
 		return service;
 	}

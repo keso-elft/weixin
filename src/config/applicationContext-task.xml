@@ -8,14 +8,13 @@
 		<property name="triggers">
 			<list>
 				<ref local="task1Job" />
-				<ref local="task2Job" />
 			</list> 
 		</property>
 	</bean>
 	
 	<bean name="task1" class="com.barrage.task.Task1">
 		<property name="sessionManager" ref="sessionManager" />
-		<property name="userManager" ref="userManager" />
+		<property name="fansManager" ref="fansManager" />
 		<property name="weixinSender" ref="weixinSender" />
 	</bean>
 
@@ -27,22 +26,6 @@
 			</bean>
 		</property>
 		<property name="cronExpression" value="0 0/1 * * * ?" />
-	</bean>
-	
-	<bean name="task2" class="com.barrage.task.Task2">
-		<property name="sessionManager" ref="sessionManager" />
-		<property name="userManager" ref="userManager" />
-		<property name="weixinSender" ref="weixinSender" />
-	</bean>
-
-	<bean id="task2Job" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail">
-			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-				<property name="targetObject" ref="task2" />
-				<property name="targetMethod" value="run" />
-			</bean>
-		</property>
-		<property name="cronExpression" value="0 0/10 * * * ?" />
 	</bean>
 
 </beans>

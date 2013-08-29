@@ -10,6 +10,8 @@ public class Result {
 	public static final int RESULT_SUCCESS = 1;
 
 	public static final int RESULT_FAIL = 2;
+	
+	public static final int RESULT_RETRY = 3;
 
 	/**
 	 * 结果码
