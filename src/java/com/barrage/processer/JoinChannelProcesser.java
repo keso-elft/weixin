@@ -20,7 +20,7 @@ public class JoinChannelProcesser implements Processor {
 
 	public void init(WebApplicationContext context) {
 		channelManager = (ChannelManager) context.getBean("channelManager");
-		fansManager = (WeiXinFansManager) context.getBean("fansManager");
+		fansManager = (WeiXinFansManager) context.getBean("weiXinFansManager");
 		userChannelRelationManager = (UserChannelRelationManager) context.getBean("userChannelRelationManager");
 	}
 

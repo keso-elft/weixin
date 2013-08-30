@@ -14,7 +14,7 @@
 	
 	<bean name="task1" class="com.barrage.task.Task1">
 		<property name="sessionManager" ref="sessionManager" />
-		<property name="fansManager" ref="fansManager" />
+		<property name="weiXinFansManager" ref="weiXinFansManager" />
 		<property name="weixinSender" ref="weixinSender" />
 	</bean>
 

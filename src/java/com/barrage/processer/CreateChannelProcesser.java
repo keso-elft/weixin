@@ -17,7 +17,7 @@ public class CreateChannelProcesser implements Processor {
 
 	public void init(WebApplicationContext context) {
 		channelManager = (ChannelManager) context.getBean("channelManager");
-		fansManager = (WeiXinFansManager) context.getBean("fansManager");
+		fansManager = (WeiXinFansManager) context.getBean("weiXinFansManager");
 	}
 
 	public Object process(InMessage msg) {

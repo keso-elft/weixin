@@ -9,21 +9,24 @@
 	
 	<bean id="sessionManager" class="com.weixin.server.session.SessionManager" scope="singleton"/>
 	
-	<bean id="weixinSender" class="com.weixin.httpsend.WeixinHttpSender" scope="singleton"/>
+	<bean id="weixinSender" class="com.weixin.httpsend.WeixinHttpSender" scope="singleton">
+		<property name="userChannelRelationManager" ref="userChannelRelationManager"/>
+		<property name="weiXinFansManager" ref="weiXinFansManager"/>
+	</bean>
 	
-	<bean id="fansManager" class="com.weixin.common.WeiXinFansManager" scope="singleton"/>
+	<bean id="weiXinFansManager" class="com.weixin.common.WeiXinFansManager" scope="singleton"/>
 	
 	<!-- db manager  -->
 	
-	<bean id="channelManager" class="com.barrage.service.impl.ChannelManager">
+	<bean id="channelManager" class="com.barrage.service.ChannelManager">
 		<property name="channelDao" ref="channelDao"/>
 	</bean>
 	
-	<bean id="storeMessageManager" class="com.barrage.service.impl.StoreMessageManager">
+	<bean id="storeMessageManager" class="com.barrage.service.StoreMessageManager">
 		<property name="storeMessageDao" ref="storeMessageDao"/>
 	</bean>
 	
-	<bean id="userChannelRelationManager" class="com.barrage.service.impl.UserChannelRelationManager">
+	<bean id="userChannelRelationManager" class="com.barrage.service.UserChannelRelationManager">
 		<property name="userChannelRelationDao" ref="userChannelRelationDao"/>
 	</bean>
 	

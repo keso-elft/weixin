@@ -46,7 +46,7 @@ public class Server {
 
 		serviceManager = ServiceManager.getInstance();
 		sessionManager = (SessionManager) context.getBean("sessionManager");
-		userManager = (WeiXinFansManager) context.getBean("fansManager");
+		userManager = (WeiXinFansManager) context.getBean("weiXinFansManager");
 
 		weixinSender = (WeixinHttpSender) context.getBean("weixinSender");
 		weixinSender.start();
