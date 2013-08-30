@@ -15,20 +15,16 @@
 	
 	<!-- db manager  -->
 	
-	<bean id="channelManager" class="com.barrage.service.impl.ChannelManagerImpl">
+	<bean id="channelManager" class="com.barrage.service.impl.ChannelManager">
 		<property name="channelDao" ref="channelDao"/>
 	</bean>
 	
-	<bean id="storeMessageManager" class="com.barrage.service.impl.StoreMessageManagerImpl">
+	<bean id="storeMessageManager" class="com.barrage.service.impl.StoreMessageManager">
 		<property name="storeMessageDao" ref="storeMessageDao"/>
 	</bean>
 	
-	<bean id="userChannelRelationManager" class="com.barrage.service.impl.UserChannelRelationManagerImpl">
+	<bean id="userChannelRelationManager" class="com.barrage.service.impl.UserChannelRelationManager">
 		<property name="userChannelRelationDao" ref="userChannelRelationDao"/>
-	</bean>
-	
-	<bean id="userManager" class="com.barrage.service.impl.UserManagerImpl">
-		<property name="userDao" ref="userDao"/>
 	</bean>
 	
 </beans>

@@ -1,25 +1,30 @@
 package com.weixin.httpsend;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.barrage.service.UserChannelRelationManager;
 import com.weixin.common.WeiXinFans;
+import com.weixin.common.WeiXinFansManager;
 
 public class WeixinHttpSender {
 
 	protected Logger log = LogManager.getLogger("weixinServer");
 
-	private BlockingQueue<String> cache = new ArrayBlockingQueue<String>(1000);
+	private BlockingQueue<HttpSendMsg> cache = new ArrayBlockingQueue<HttpSendMsg>(1000);
+
+	private UserChannelRelationManager userChannelRelationManager;
+
+	private WeiXinFansManager weiXinFansManager;
 
 	boolean isStop = false;
 
-	public boolean send(String content) {
-		return cache.offer(content);
+	public boolean send(String fromUserName, Long channelId, String content) {
+		return cache.offer(new HttpSendMsg(fromUserName, channelId, content));
 	}
 
 	public void start() {
@@ -29,22 +34,27 @@ public class WeixinHttpSender {
 					public void run() {
 						while (true) {
 							try {
-								String content = (String) cache.take();
-								if (content == null)
+								HttpSendMsg msg = (HttpSendMsg) cache.take();
+								if (msg == null)
 									continue;
 
-								Map<String, String> cookie = HttpSendTools.auth("keso.elft@gmail.com", "");
+								if (!HttpSendTools.haseCookie())
+									HttpSendTools.auth();
 
-								// 获取粉丝列表
-								List<WeiXinFans> list = HttpSendTools.getFans(cookie);
+								// 获取频道
+								long channelId = msg.getChannelId();
+								List<String> list = userChannelRelationManager.getChannelAllUser(channelId);
 
 								// 群发
-								for (WeiXinFans fans : list) {
-									HttpSendTools.sendMsg(cookie, content, fans.getFakeId());
+								for (String fromUserName : list) {
+									if (!msg.getFromUserName().equals(fromUserName)) {
+										WeiXinFans fan = weiXinFansManager.getUser(fromUserName);
+										String rtnMessage = HttpSendTools.sendMsg(msg.getContent(), fan.getFakeId());
+										log.info("消息发送回复:" + rtnMessage);
+									}
 								}
 
-								// 保存到数据库
-								log.info("消息发送成功:" + content);
+								log.info("消息发送完成" + msg);
 							} catch (Throwable e) {
 								log.error("消息发送失败", e);
 							}
@@ -59,6 +69,22 @@ public class WeixinHttpSender {
 
 	public void stop() {
 		isStop = true;
+	}
+
+	public UserChannelRelationManager getUserChannelRelationManager() {
+		return userChannelRelationManager;
+	}
+
+	public void setUserChannelRelationManager(UserChannelRelationManager userChannelRelationManager) {
+		this.userChannelRelationManager = userChannelRelationManager;
+	}
+
+	public WeiXinFansManager getWeiXinFansManager() {
+		return weiXinFansManager;
+	}
+
+	public void setWeiXinFansManager(WeiXinFansManager weiXinFansManager) {
+		this.weiXinFansManager = weiXinFansManager;
 	}
 
 }

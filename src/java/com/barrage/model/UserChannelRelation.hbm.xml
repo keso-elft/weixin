@@ -12,9 +12,9 @@
 			<generator class="native" />
 		</id>
 
-		<property name="userId" type="java.lang.Long" column="userId" />
+		<property name="fromUserName" type="java.lang.Long" column="from_user_name" />
 
-		<property name="channelId" type="java.lang.Long" column="channelId" />
+		<property name="channelId" type="java.lang.Long" column="channel_id" />
 
 		<property name="status" type="java.lang.Long" column="status" />
 

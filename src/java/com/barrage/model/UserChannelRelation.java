@@ -7,7 +7,7 @@ public class UserChannelRelation {
 
 	private Long id;
 
-	private Long userId;
+	private String fromUserName;
 
 	private Long channelId;
 
@@ -24,14 +24,6 @@ public class UserChannelRelation {
 		this.id = id;
 	}
 
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
 	public Long getChannelId() {
 		return channelId;
 	}
@@ -46,5 +38,13 @@ public class UserChannelRelation {
 
 	public void setStatus(Long status) {
 		this.status = status;
+	}
+
+	public String getFromUserName() {
+		return fromUserName;
+	}
+
+	public void setFromUserName(String fromUserName) {
+		this.fromUserName = fromUserName;
 	}
 }

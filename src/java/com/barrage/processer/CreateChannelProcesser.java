@@ -1,10 +1,7 @@
 package com.barrage.processer;
 
-import java.util.Date;
-
 import org.springframework.web.context.WebApplicationContext;
 
-import com.barrage.model.Channel;
 import com.barrage.service.ChannelManager;
 import com.weixin.common.WeiXinFans;
 import com.weixin.common.WeiXinFansManager;
@@ -27,24 +24,20 @@ public class CreateChannelProcesser implements Processor {
 		String content = msg.getContent();
 		String fromUserName = msg.getFromUserName();
 		WeiXinFans fan = fansManager.getUser(fromUserName);
+		if (fan == null)
+			return new ProcessError("找不到该用户");
 
 		String[] paras = content.split(" ");
-		if (fan != null && paras != null && paras.length > 1) {
-			Channel channel = new Channel();
-			channel.setName(paras[1]);
+		if (paras != null && paras.length > 1) {
+			String password = null;
 			if (paras.length > 2)
-				channel.setPassword(paras[2]);
-			channel.setCreateUserId(fan.getId());
-			channel.setCreateTime(new Date());
-
-			String result = channelManager.save(channel).toString();
-
-			if (result.equalsIgnoreCase("-1"))
+				password = paras[2];
+			Long result = channelManager.createChannel(fan.getId(), paras[1], password);
+			if (result.longValue() == -1)
 				return new ProcessError("创建失败");
-
 			return result;
 		} else {
-			return new ProcessError("创建失败");
+			return new ProcessError("命令错误");
 		}
 	}
 }

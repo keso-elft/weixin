@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -14,6 +16,7 @@ import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.weixin.Constants;
 import com.weixin.common.WeiXinFans;
 import com.weixin.util.MD5;
 
@@ -24,7 +27,11 @@ import com.weixin.util.MD5;
  */
 public class HttpSendTools {
 
+	protected static Logger log = LogManager.getLogger("weixinServer");
+
 	public static String TOKEN;
+
+	public static Map<String, String> currentCookies;
 
 	public static String LOGIN_URL = "http://mp.weixin.qq.com/cgi-bin/login?lang=zh_CN";
 
@@ -33,10 +40,10 @@ public class HttpSendTools {
 	/**
 	 * 获取登录session
 	 */
-	public static Map<String, String> auth(String username, String password) throws IOException {
+	public static void auth() throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("username", username);
-		map.put("pwd", MD5.getMD5(password.getBytes()).toUpperCase());
+		map.put("username", Constants.WEB_USER_NAME);
+		map.put("pwd", MD5.getMD5(Constants.WEB_PASSWORD.getBytes()).toUpperCase());
 		map.put("f", "json");
 		Response response = Jsoup.connect(LOGIN_URL).ignoreContentType(true).method(Method.POST).data(map).execute();
 		Map<String, String> cookies = response.cookies();
@@ -50,48 +57,52 @@ public class HttpSendTools {
 		TOKEN = errMsg.substring(errMsg.lastIndexOf("=") + 1, errMsg.length());
 		cookies = response.cookies();
 
-		return cookies;
+		currentCookies = cookies;
 	}
 
 	/**
 	 * 获取关注列表
-	 * 
-	 * @param cookie
-	 * @return
-	 * @throws IOException
 	 */
-	public static List<WeiXinFans> getFans(Map<String, String> cookie) throws IOException {
-
-		String FANS_URL = "http://mp.weixin.qq.com/cgi-bin/contactmanagepage?t=wxm-friend&token=" + TOKEN
-				+ "&lang=zh_CN&pagesize=10&pageidx=0&type=0&groupid=0";
-		Document document = Jsoup.connect(FANS_URL).cookies(cookie).post();
-		Elements eles = document.select("#json-friendList");
-		Element element = eles.get(0);
-		String json = element.data();
-		Gson gson = new Gson();
-		return gson.fromJson(json, new TypeToken<List<WeiXinFans>>() {
-		}.getType());
-
+	public static List<WeiXinFans> getFans() throws IOException {
+		if (currentCookies == null) {
+			return null;
+		} else {
+			String FANS_URL = "http://mp.weixin.qq.com/cgi-bin/contactmanagepage?t=wxm-friend&token=" + TOKEN
+					+ "&lang=zh_CN&pagesize=10&pageidx=0&type=0&groupid=0";
+			Document document = Jsoup.connect(FANS_URL).cookies(currentCookies).post();
+			Elements eles = document.select("#json-friendList");
+			Element element = eles.get(0);
+			String json = element.data();
+			Gson gson = new Gson();
+			return gson.fromJson(json, new TypeToken<List<WeiXinFans>>() {
+			}.getType());
+		}
 	}
 
 	/**
 	 *  发送消息
 	 */
-	public static void sendMsg(Map<String, String> cookie, String content, String fakeId) throws IOException {
+	public static String sendMsg(String content, String fakeId) throws IOException {
+		if (currentCookies != null) {
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("tofakeid", fakeId);
+			map.put("content", content);
+			map.put("error", "false");
+			map.put("token", TOKEN);
+			map.put("type", "1");
+			map.put("ajax", "1");
+			String referrerUrl = "http://mp.weixin.qq.com/cgi-bin/singlemsgpage?token=" + TOKEN + "&fromfakeid="
+					+ fakeId + "&msgid=&source=&count=20&t=wxm-singlechat&lang=zh_CN";
+			Document document = Jsoup.connect(SEND_MSG).referrer(referrerUrl).data(map).cookies(currentCookies).post();
+			Element body = document.body();
 
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("tofakeid", fakeId);
-		map.put("content", content);
-		map.put("error", "false");
-		map.put("token", TOKEN);
-		map.put("type", "1");
-		map.put("ajax", "1");
-		String referrerUrl = "http://mp.weixin.qq.com/cgi-bin/singlemsgpage?token=" + TOKEN + "&fromfakeid=" + fakeId
-				+ "&msgid=&source=&count=20&t=wxm-singlechat&lang=zh_CN";
-		Document document = Jsoup.connect(SEND_MSG).referrer(referrerUrl).data(map).cookies(cookie).post();
-		Element body = document.body();
-		System.out.println(body.text());
+			return body.text();
+		}
+		return null;
+	}
 
+	public static boolean haseCookie() {
+		return currentCookies != null;
 	}
 
 	public static void main(String[] args) throws IOException {

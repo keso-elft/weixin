@@ -1,9 +1,17 @@
 package com.barrage.service;
 
-import java.io.Serializable;
+import com.barrage.dao.StoreMessageDao;
 
-import com.barrage.model.StoreMessage;
+public class StoreMessageManager {
 
-public interface StoreMessageManager extends EntityManager<StoreMessage, Serializable> {
+	StoreMessageDao storeMessageDao;
+
+	public StoreMessageDao getStoreMessageDao() {
+		return storeMessageDao;
+	}
+
+	public void setStoreMessageDao(StoreMessageDao storeMessageDao) {
+		this.storeMessageDao = storeMessageDao;
+	}
 
 }

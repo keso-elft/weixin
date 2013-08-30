@@ -25,13 +25,13 @@ public class Task1 {
 	public void run() {
 
 		fansManager.accessUser("1000");
-		List<WeiXinFans> users = fansManager.getValidUsers();
+		List<WeiXinFans> users = fansManager.getUsers();
 
 		for (WeiXinFans user : users) {
 			// 发送
 			String content = ServiceManager.getInstance().getService("liveNotify").getServiceSendMessage();
 			content = content.replace("[content]", "aaa");
-			weixinSender.send(content);
+			// weixinSender.send(content);
 			// 设置session
 			sessionManager.accessSession(user);
 			Session session = sessionManager.getSession(user.getFromUserName());

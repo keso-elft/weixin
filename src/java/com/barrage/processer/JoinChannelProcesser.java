@@ -5,9 +5,9 @@ import org.springframework.web.context.WebApplicationContext;
 import com.barrage.model.Channel;
 import com.barrage.service.ChannelManager;
 import com.barrage.service.UserChannelRelationManager;
-import com.weixin.common.WeiXinFans;
 import com.weixin.common.WeiXinFansManager;
 import com.weixin.server.message.request.InMessage;
+import com.weixin.server.model.ProcessError;
 import com.weixin.server.processor.Processor;
 
 public class JoinChannelProcesser implements Processor {
@@ -27,25 +27,25 @@ public class JoinChannelProcesser implements Processor {
 	public Object process(InMessage msg) {
 		String content = msg.getContent();
 		String fromUserName = msg.getFromUserName();
-		WeiXinFans fan = fansManager.getUser(fromUserName);
 
 		String[] paras = content.split(" ");
-		if (fan != null && paras != null && paras.length > 1) {
+		if (paras != null && paras.length > 1) {
 			Long id = new Long(paras[1]);
-			Channel channel = channelManager.get(id);
-			if (channel != null && channel.getPassword() != null && channel.getPassword().length() != 0) {
+			Channel channel = channelManager.findChannelId(id);
+			if (channel == null)
+				return new ProcessError("无此频道");
+			if (channel.getPassword() != null && channel.getPassword().length() != 0) {
 				if (paras.length == 2)
-					return null;
-				if (paras.length > 2) {
-					if (!channel.getPassword().equals(paras[2])) {
-						return null;
-					}
+					return new ProcessError("频道需要密码加入");
+				if (paras.length > 2 && channel.getPassword().equals(paras[2])) {
+					return "密码错误";
 				}
 			}
 
-			return userChannelRelationManager.join(fan.getId(), channel.getId());
-		} else {
+			userChannelRelationManager.join(fromUserName, channel.getId());
 			return null;
+		} else {
+			return new ProcessError("命令错误");
 		}
 	}
 }
