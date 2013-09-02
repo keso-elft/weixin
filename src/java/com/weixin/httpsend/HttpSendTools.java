@@ -40,7 +40,7 @@ public class HttpSendTools {
 	/**
 	 * 获取登录session
 	 */
-	public static void auth() throws IOException {
+	public static Map<String, String> auth() throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("username", Constants.WEB_USER_NAME);
 		map.put("pwd", MD5.getMD5(Constants.WEB_PASSWORD.getBytes()).toUpperCase());
@@ -58,47 +58,48 @@ public class HttpSendTools {
 		cookies = response.cookies();
 
 		currentCookies = cookies;
+
+		return cookies;
 	}
 
 	/**
 	 * 获取关注列表
 	 */
 	public static List<WeiXinFans> getFans() throws IOException {
-		if (currentCookies == null) {
-			return null;
-		} else {
-			String FANS_URL = "http://mp.weixin.qq.com/cgi-bin/contactmanagepage?t=wxm-friend&token=" + TOKEN
-					+ "&lang=zh_CN&pagesize=10&pageidx=0&type=0&groupid=0";
-			Document document = Jsoup.connect(FANS_URL).cookies(currentCookies).post();
-			Elements eles = document.select("#json-friendList");
-			Element element = eles.get(0);
-			String json = element.data();
-			Gson gson = new Gson();
-			return gson.fromJson(json, new TypeToken<List<WeiXinFans>>() {
-			}.getType());
-		}
+		if (currentCookies == null)
+			auth();
+
+		String FANS_URL = "http://mp.weixin.qq.com/cgi-bin/contactmanagepage?t=wxm-friend&token=" + TOKEN
+				+ "&lang=zh_CN&pagesize=10&pageidx=0&type=0&groupid=0";
+		Document document = Jsoup.connect(FANS_URL).cookies(currentCookies).post();
+		Elements eles = document.select("#json-friendList");
+		Element element = eles.get(0);
+		String json = element.data();
+		Gson gson = new Gson();
+		return gson.fromJson(json, new TypeToken<List<WeiXinFans>>() {
+		}.getType());
 	}
 
 	/**
 	 *  发送消息
 	 */
 	public static String sendMsg(String content, String fakeId) throws IOException {
-		if (currentCookies != null) {
-			HashMap<String, String> map = new HashMap<String, String>();
-			map.put("tofakeid", fakeId);
-			map.put("content", content);
-			map.put("error", "false");
-			map.put("token", TOKEN);
-			map.put("type", "1");
-			map.put("ajax", "1");
-			String referrerUrl = "http://mp.weixin.qq.com/cgi-bin/singlemsgpage?token=" + TOKEN + "&fromfakeid="
-					+ fakeId + "&msgid=&source=&count=20&t=wxm-singlechat&lang=zh_CN";
-			Document document = Jsoup.connect(SEND_MSG).referrer(referrerUrl).data(map).cookies(currentCookies).post();
-			Element body = document.body();
+		if (currentCookies == null)
+			auth();
 
-			return body.text();
-		}
-		return null;
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("tofakeid", fakeId);
+		map.put("content", content);
+		map.put("error", "false");
+		map.put("token", TOKEN);
+		map.put("type", "1");
+		map.put("ajax", "1");
+		String referrerUrl = "http://mp.weixin.qq.com/cgi-bin/singlemsgpage?token=" + TOKEN + "&fromfakeid=" + fakeId
+				+ "&msgid=&source=&count=20&t=wxm-singlechat&lang=zh_CN";
+		Document document = Jsoup.connect(SEND_MSG).referrer(referrerUrl).data(map).cookies(currentCookies).post();
+		Element body = document.body();
+
+		return body.text();
 	}
 
 	public static boolean haseCookie() {

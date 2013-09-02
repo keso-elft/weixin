@@ -39,18 +39,15 @@ public class WeiXinFansManager {
 	 * 用户接入
 	 */
 	public WeiXinFans accessUser(String fromUserName) {
-		synchronized (lock) {
-			WeiXinFans user = userMap.get(fromUserName);
-			if (user != null) {
-				user.access();
-				userMap.put(fromUserName, user);
-				userDao.saveOrUpdate(user);
-			} else {
-				userDao.createUser(fromUserName);
-				reloadUser(fromUserName);
-			}
-			return user;
+		WeiXinFans user = userMap.get(fromUserName);
+		if (user != null) {
+			user.access();
+			userDao.saveOrUpdate(user);
+		} else {
+			userDao.createUser(fromUserName);
 		}
+		reloadUser(fromUserName);
+		return userMap.get(fromUserName);
 	}
 
 	/**
@@ -63,14 +60,11 @@ public class WeiXinFansManager {
 	}
 
 	/**
-	 * 同步重载用户
+	 * 从数据库同步重载用户
 	 */
 	public void reloadUser(String fromUserName) {
 		// 数据库获取
 		WeiXinFans loadInfo = userDao.getUserByFromUserName(fromUserName);
-		if (loadInfo != null && loadInfo.getFakeId() == null) {
-			// TODO HTTP获取并更新
-		}
 
 		synchronized (lock) {
 			WeiXinFans info = (WeiXinFans) userMap.get(fromUserName);
@@ -88,16 +82,57 @@ public class WeiXinFansManager {
 	}
 
 	/**
+	 * 从HTTP同步重载用户
+	 */
+	public void httpReload(String fromUserName) {
+		// 数据库获取
+		WeiXinFans loadInfo = userDao.getUserByFromUserName(fromUserName);
+
+		// TODO HTTP获取fakeId并更新到数据库
+		try {
+			List<WeiXinFans> httpInfoList = HttpSendTools.getFans();
+
+			if (httpInfoList != null) {
+				for (WeiXinFans httpFan : httpInfoList) {
+
+				}
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	/**
+	 * 从HTTP同步重载全部
+	 */
+	public void httpReloadAll() {
+		List<WeiXinFans> dbInfoList = userDao.getAllValidUser();
+		if (dbInfoList == null)
+			return;
+
+		// TODO HTTP获取fakeId并更新到数据库
+		try {
+			List<WeiXinFans> httpInfoList = HttpSendTools.getFans();
+
+			for (WeiXinFans dbInfo : dbInfoList) {
+				if (dbInfo.getFakeId() == null) {
+
+				}
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	/**
 	 * 同步重载全部
 	 */
 	public void reloadAll() {
 		List<WeiXinFans> newInfoList = userDao.getAllValidUser();
-		// TODO HTTP获取并更新
-		try {
-			List<WeiXinFans> list = HttpSendTools.getFans();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		if (newInfoList == null)
+			return;
 
 		for (WeiXinFans newInfo : newInfoList) {
 			synchronized (lock) {
@@ -136,6 +171,7 @@ public class WeiXinFansManager {
 	public class WeiXinFansRefreshThread implements Runnable {
 
 		public void run() {
+			httpReloadAll();
 			reloadAll();
 
 			try {
