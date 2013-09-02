@@ -1,6 +1,7 @@
 package com.barrage.dao.hibernate;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import com.barrage.dao.UserDao;
@@ -26,4 +27,11 @@ public class UserHibernate extends EntityDaoHibernate<WeiXinFans, Serializable> 
 		return getHibernateTemplate().find("from WeiXinFans");
 	}
 
+	@Override
+	public void createUser(String fromUserName) {
+		WeiXinFans user = new WeiXinFans();
+		user.setFromUserName(fromUserName);
+		user.setLastAccessedTime(new Date());
+		save(user);
+	}
 }

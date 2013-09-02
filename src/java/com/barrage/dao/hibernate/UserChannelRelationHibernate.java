@@ -1,8 +1,9 @@
 package com.barrage.dao.hibernate;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Query;
 
 import com.barrage.dao.UserChannelRelationDao;
 import com.barrage.model.UserChannelRelation;
@@ -12,12 +13,13 @@ public class UserChannelRelationHibernate extends EntityDaoHibernate<UserChannel
 
 	@Override
 	public void join(String fromUserName, long channelId) {
-		List<Object> params = new ArrayList<Object>();
-		params.add(fromUserName);
-		params.add(channelId);
+
+		String hql = "from UserChannelRelation where fromUserName = :fromUserName and channelId = :channelId and status = 0";
+		Query qry = getSession().createQuery(hql);
+		qry.setString("fromUserName", fromUserName);
+		qry.setLong("channelId", channelId);
 		@SuppressWarnings("unchecked")
-		List<UserChannelRelation> list = getHibernateTemplate().find(
-				"from UserChannelRelation where fromUserName = ? and channelId = ? and status = 0", params);
+		List<UserChannelRelation> list = qry.list();
 
 		UserChannelRelation userChannelRelation;
 
@@ -35,11 +37,9 @@ public class UserChannelRelationHibernate extends EntityDaoHibernate<UserChannel
 
 	@Override
 	public void quit(String fromUserName) {
-		List<Object> params = new ArrayList<Object>();
-		params.add(fromUserName);
 		@SuppressWarnings("unchecked")
 		List<UserChannelRelation> list = getHibernateTemplate().find(
-				"from UserChannelRelation where fromUserName = ? and status = 0", params);
+				"from UserChannelRelation where fromUserName = ? and status = 0", fromUserName);
 
 		UserChannelRelation userChannelRelation;
 

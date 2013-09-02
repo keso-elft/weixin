@@ -21,7 +21,7 @@ public class ChannelManager {
 
 	private long refreshPeriod = 60 * 60 * 1000;
 
-	public ChannelManager() {
+	public void init() {
 		new Thread(new ChannelRefreshThread(), "ChannelRefreshThread").start();
 	}
 

@@ -35,7 +35,7 @@ public class CreateChannelProcesser implements Processor {
 			Long result = channelManager.createChannel(fan.getId(), paras[1], password);
 			if (result.longValue() == -1)
 				return new ProcessError("创建失败");
-			return result;
+			return result.toString();
 		} else {
 			return new ProcessError("命令错误");
 		}

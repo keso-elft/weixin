@@ -26,7 +26,7 @@ public class UserChannelRelationManager {
 
 	private long refreshPeriod = 60 * 60 * 1000;
 
-	public UserChannelRelationManager() {
+	public void init() {
 		new Thread(new UserChannelRelationRefreshThread(), "UserChannelRelationRefreshThread").start();
 	}
 
@@ -35,6 +35,7 @@ public class UserChannelRelationManager {
 	 */
 	public void join(String fromUserName, long channelId) {
 		synchronized (lock) {
+			userChannelRelationDao.join(fromUserName, channelId);
 			userRelationMap.put(fromUserName, channelId);
 			List<String> list = channelRelationMap.get(channelId);
 			if (list == null)
@@ -49,6 +50,7 @@ public class UserChannelRelationManager {
 	 */
 	public void quit(String fromUserName) {
 		synchronized (lock) {
+			userChannelRelationDao.quit(fromUserName);
 			Long channelId = userRelationMap.remove(fromUserName);
 			if (channelId != null) {
 				List<String> list = channelRelationMap.get(channelId);
@@ -64,6 +66,7 @@ public class UserChannelRelationManager {
 	 */
 	public void channelInvalid(Long channelId) {
 		synchronized (lock) {
+			// TODO 无数据库操作
 			List<String> userList = channelRelationMap.remove(channelId);
 			for (String fromUserName : userList) {
 				userRelationMap.remove(fromUserName);

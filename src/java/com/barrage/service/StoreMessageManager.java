@@ -6,6 +6,9 @@ public class StoreMessageManager {
 
 	StoreMessageDao storeMessageDao;
 
+	public void init() {
+	}
+
 	public StoreMessageDao getStoreMessageDao() {
 		return storeMessageDao;
 	}

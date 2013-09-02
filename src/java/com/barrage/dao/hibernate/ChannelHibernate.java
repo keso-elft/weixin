@@ -10,7 +10,7 @@ public class ChannelHibernate extends EntityDaoHibernate<Channel, Serializable> 
 
 	@SuppressWarnings("unchecked")
 	public List<Channel> getAllValidChannel() {
-		return getHibernateTemplate().find("from Channel where status = ?", 0);
+		return getHibernateTemplate().find("from Channel where status = 0");
 	}
 
 }

@@ -37,7 +37,7 @@ public class WeiXinFans {
 	/**
 	 * 用户分组
 	 */
-	private int groupId;
+	private long groupId;
 
 	public void access() {
 		this.lastAccessedTime = new Date();
@@ -83,11 +83,11 @@ public class WeiXinFans {
 		this.remarkName = remarkName;
 	}
 
-	public int getGroupId() {
+	public long getGroupId() {
 		return groupId;
 	}
 
-	public void setGroupId(int groupId) {
+	public void setGroupId(long groupId) {
 		this.groupId = groupId;
 	}
 

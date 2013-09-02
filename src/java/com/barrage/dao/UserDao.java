@@ -11,4 +11,6 @@ public interface UserDao extends EntityDao<WeiXinFans, Serializable> {
 
 	public List<WeiXinFans> getAllValidUser();
 
+	public void createUser(String fromUserName);
+
 }

@@ -23,7 +23,7 @@ public class WeiXinFansManager {
 
 	private long sessionRefreshPeriod = 60 * 60 * 1000;
 
-	public WeiXinFansManager() {
+	public void init() {
 		new Thread(new WeiXinFansRefreshThread(), "WeiXinFansRefreshThread").start();
 	}
 
@@ -43,11 +43,10 @@ public class WeiXinFansManager {
 			if (user != null) {
 				user.access();
 				userMap.put(fromUserName, user);
+				userDao.saveOrUpdate(user);
 			} else {
-				user = new WeiXinFans();
-				user.setFromUserName(fromUserName);
-				user.access();
-				userMap.put(fromUserName, user);
+				userDao.createUser(fromUserName);
+				reloadUser(fromUserName);
 			}
 			return user;
 		}

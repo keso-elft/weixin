@@ -69,7 +69,7 @@ public class ServiceChoise {
 				if (rtnObj instanceof ProcessError) {
 					isError = true;
 				}
-				result.setMessage(createMessage(processor.process(msg)));
+				result.setMessage(createMessage(rtnObj));
 			} else
 				result.setMessage(createMessage(successMsg));
 

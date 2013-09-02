@@ -14,20 +14,25 @@
 		<property name="weiXinFansManager" ref="weiXinFansManager"/>
 	</bean>
 	
-	<bean id="weiXinFansManager" class="com.weixin.common.WeiXinFansManager" scope="singleton"/>
-	
 	<!-- db manager  -->
 	
-	<bean id="channelManager" class="com.barrage.service.ChannelManager">
-		<property name="channelDao" ref="channelDao"/>
+	<bean id="weiXinFansManager" class="com.weixin.common.WeiXinFansManager" scope="singleton">
+		<property name="userDao" ref="userDao"/>
+		<property name="sessionRefreshPeriod" value="3600000"/>
 	</bean>
 	
-	<bean id="storeMessageManager" class="com.barrage.service.StoreMessageManager">
+	<bean id="channelManager" class="com.barrage.service.ChannelManager" scope="singleton">
+		<property name="channelDao" ref="channelDao"/>
+		<property name="refreshPeriod" value="3600000"/>
+	</bean>
+	
+	<bean id="storeMessageManager" class="com.barrage.service.StoreMessageManager" scope="singleton">
 		<property name="storeMessageDao" ref="storeMessageDao"/>
 	</bean>
 	
-	<bean id="userChannelRelationManager" class="com.barrage.service.UserChannelRelationManager">
+	<bean id="userChannelRelationManager" class="com.barrage.service.UserChannelRelationManager" scope="singleton">
 		<property name="userChannelRelationDao" ref="userChannelRelationDao"/>
+		<property name="refreshPeriod" value="3600000"/>
 	</bean>
 	
 </beans>

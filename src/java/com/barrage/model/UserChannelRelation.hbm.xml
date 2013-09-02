@@ -12,7 +12,7 @@
 			<generator class="native" />
 		</id>
 
-		<property name="fromUserName" type="java.lang.Long" column="from_user_name" />
+		<property name="fromUserName" type="java.lang.String" column="from_user_name" />
 
 		<property name="channelId" type="java.lang.Long" column="channel_id" />
 

@@ -12,6 +12,9 @@ import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.barrage.service.ChannelManager;
+import com.barrage.service.StoreMessageManager;
+import com.barrage.service.UserChannelRelationManager;
 import com.weixin.common.WeiXinFans;
 import com.weixin.common.WeiXinFansManager;
 import com.weixin.httpsend.WeixinHttpSender;
@@ -32,9 +35,15 @@ public class Server {
 
 	public SessionManager sessionManager;
 
+	private WeixinHttpSender weixinSender;
+
 	public WeiXinFansManager userManager;
 
-	private WeixinHttpSender weixinSender;
+	private ChannelManager channelManager;
+
+	private StoreMessageManager storeMessageManager;
+
+	private UserChannelRelationManager userChannelRelationManager;
 
 	/**
 	 * 服务器初始化
@@ -46,10 +55,17 @@ public class Server {
 
 		serviceManager = ServiceManager.getInstance();
 		sessionManager = (SessionManager) context.getBean("sessionManager");
-		userManager = (WeiXinFansManager) context.getBean("weiXinFansManager");
 
 		weixinSender = (WeixinHttpSender) context.getBean("weixinSender");
 		weixinSender.start();
+		userManager = (WeiXinFansManager) context.getBean("weiXinFansManager");
+		userManager.init();
+		channelManager = (ChannelManager) context.getBean("channelManager");
+		channelManager.init();
+		storeMessageManager = (StoreMessageManager) context.getBean("storeMessageManager");
+		storeMessageManager.init();
+		userChannelRelationManager = (UserChannelRelationManager) context.getBean("userChannelRelationManager");
+		userChannelRelationManager.init();
 
 		Collection<Service> services = serviceManager.getServices();
 		for (Service service : services) {
