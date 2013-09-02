@@ -14,7 +14,7 @@ public class UserChannelRelationHibernate extends EntityDaoHibernate<UserChannel
 	@Override
 	public void join(String fromUserName, long channelId) {
 
-		String hql = "from UserChannelRelation where fromUserName = :fromUserName and channelId = :channelId and status = 0";
+		String hql = "from UserChannelRelation where fromUserName = :fromUserName and channelId = :channelId";
 		Query qry = getSession().createQuery(hql);
 		qry.setString("fromUserName", fromUserName);
 		qry.setLong("channelId", channelId);
@@ -66,7 +66,7 @@ public class UserChannelRelationHibernate extends EntityDaoHibernate<UserChannel
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<UserChannelRelation> getRelationsByFromChannelId(Long channelId) {
+	public List<UserChannelRelation> getRelationsByChannelId(Long channelId) {
 		return getHibernateTemplate().find("from UserChannelRelation where channelId = ? and status = 0", channelId);
 	}
 

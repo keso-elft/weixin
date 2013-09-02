@@ -13,7 +13,7 @@ public interface UserChannelRelationDao extends EntityDao<UserChannelRelation, S
 
 	public UserChannelRelation getRelationsByFromUserName(String fromUserName);
 
-	public List<UserChannelRelation> getRelationsByFromChannelId(Long channelId);
+	public List<UserChannelRelation> getRelationsByChannelId(Long channelId);
 
 	public List<UserChannelRelation> getAllValidRelation();
 

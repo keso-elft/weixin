@@ -7,6 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.barrage.service.ChannelManager;
 import com.barrage.service.UserChannelRelationManager;
 import com.weixin.common.WeiXinFans;
 import com.weixin.common.WeiXinFansManager;
@@ -20,6 +21,8 @@ public class WeixinHttpSender {
 	private UserChannelRelationManager userChannelRelationManager;
 
 	private WeiXinFansManager weiXinFansManager;
+
+	private ChannelManager channelManager;
 
 	boolean isStop = false;
 
@@ -41,16 +44,23 @@ public class WeixinHttpSender {
 								if (!HttpSendTools.haseCookie())
 									HttpSendTools.auth();
 
-								// 获取频道
+								// 获取频道 TODO 根据频道类型发送指定客户端
 								long channelId = msg.getChannelId();
-								List<String> list = userChannelRelationManager.getChannelAllUser(channelId);
+								// Channel channel =
+								// channelManager.findChannelId(channelId);
 
 								// 群发
+								List<String> list = userChannelRelationManager.getChannelAllUser(channelId);
 								for (String fromUserName : list) {
+									// 自己不发
 									if (!msg.getFromUserName().equals(fromUserName)) {
 										WeiXinFans fan = weiXinFansManager.getUser(fromUserName);
-										String rtnMessage = HttpSendTools.sendMsg(msg.getContent(), fan.getFakeId());
-										log.info("消息发送回复:" + rtnMessage);
+										if (fan.getFakeId() != null) {
+											String rtnMessage = HttpSendTools
+													.sendMsg(msg.getContent(), fan.getFakeId());
+											log.info("消息发送回复:" + rtnMessage);
+										}
+										// TODO fakeId同步
 									}
 								}
 
@@ -85,6 +95,14 @@ public class WeixinHttpSender {
 
 	public void setWeiXinFansManager(WeiXinFansManager weiXinFansManager) {
 		this.weiXinFansManager = weiXinFansManager;
+	}
+
+	public void setChannelManager(ChannelManager channelManager) {
+		this.channelManager = channelManager;
+	}
+
+	public ChannelManager getChannelManager() {
+		return channelManager;
 	}
 
 }

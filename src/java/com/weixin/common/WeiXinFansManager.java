@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.barrage.dao.UserDao;
+import com.weixin.httpsend.HttpSendTools;
 
 /**
  * 用户缓存类
@@ -92,6 +93,11 @@ public class WeiXinFansManager {
 	public void reloadAll() {
 		List<WeiXinFans> newInfoList = userDao.getAllValidUser();
 		// TODO HTTP获取并更新
+		try {
+			List<WeiXinFans> list = HttpSendTools.getFans();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 
 		for (WeiXinFans newInfo : newInfoList) {
 			synchronized (lock) {

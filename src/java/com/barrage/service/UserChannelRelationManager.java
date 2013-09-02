@@ -101,7 +101,7 @@ public class UserChannelRelationManager {
 	 * 同步重载频道关系
 	 */
 	public void reloadChannelRelation(Long channelId) {
-		List<UserChannelRelation> loadInfoList = userChannelRelationDao.getRelationsByFromChannelId(channelId);
+		List<UserChannelRelation> loadInfoList = userChannelRelationDao.getRelationsByChannelId(channelId);
 		if (loadInfoList == null || loadInfoList.size() == 0) {
 			channelInvalid(channelId);
 		} else {

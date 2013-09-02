@@ -12,6 +12,7 @@
 	<bean id="weixinSender" class="com.weixin.httpsend.WeixinHttpSender" scope="singleton">
 		<property name="userChannelRelationManager" ref="userChannelRelationManager"/>
 		<property name="weiXinFansManager" ref="weiXinFansManager"/>
+		<property name="channelManager" ref="channelManager"/>
 	</bean>
 	
 	<!-- db manager  -->
