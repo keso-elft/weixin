@@ -1,4 +1,4 @@
-package com.weixin.httpsend;
+package com.weixin.send.http;
 
 import java.io.IOException;
 import java.util.HashMap;

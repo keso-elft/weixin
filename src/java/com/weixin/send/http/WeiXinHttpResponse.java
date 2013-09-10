@@ -1,4 +1,4 @@
-package com.weixin.httpsend;
+package com.weixin.send.http;
 
 /** 
  * 类说明 

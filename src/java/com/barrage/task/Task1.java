@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import com.weixin.common.WeiXinFans;
 import com.weixin.common.WeiXinFansManager;
-import com.weixin.httpsend.WeixinHttpSender;
 import com.weixin.server.service.ServiceManager;
 import com.weixin.server.session.Session;
 import com.weixin.server.session.SessionManager;
@@ -19,8 +18,6 @@ public class Task1 {
 	SessionManager sessionManager;
 
 	WeiXinFansManager weiXinFansManager;
-
-	WeixinHttpSender weixinSender;
 
 	public void run() {
 
@@ -47,14 +44,6 @@ public class Task1 {
 
 	public void setSessionManager(SessionManager sessionManager) {
 		this.sessionManager = sessionManager;
-	}
-
-	public WeixinHttpSender getWeixinSender() {
-		return weixinSender;
-	}
-
-	public void setWeixinSender(WeixinHttpSender weixinSender) {
-		this.weixinSender = weixinSender;
 	}
 
 	public WeiXinFansManager getWeiXinFansManager() {

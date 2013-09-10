@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.barrage.dao.UserDao;
-import com.weixin.httpsend.HttpSendTools;
+import com.weixin.send.http.HttpSendTools;
 
 /**
  * 用户缓存类

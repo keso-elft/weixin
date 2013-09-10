@@ -9,10 +9,25 @@
 	
 	<bean id="sessionManager" class="com.weixin.server.session.SessionManager" scope="singleton"/>
 	
-	<bean id="weixinSender" class="com.weixin.httpsend.WeixinHttpSender" scope="singleton">
+	<bean id="weixinHttpSender" class="com.weixin.send.http.WeixinHttpSender" scope="singleton">
 		<property name="userChannelRelationManager" ref="userChannelRelationManager"/>
 		<property name="weiXinFansManager" ref="weiXinFansManager"/>
 		<property name="channelManager" ref="channelManager"/>
+	</bean>
+	
+	<bean id="weixinWorker" class="com.barrage.worker.WeixinWorker" scope="singleton">
+		<property name="channelManager" ref="channelManager"/>
+		<property name="weixinHttpSender" ref="weixinHttpSender"/>
+		<property name="webPageSender" ref="webPageSender"/>
+		<property name="sendMsgSaver" ref="sendMsgSaver"/>
+	</bean>
+	
+	<bean id="sendMsgSaver" class="com.barrage.worker.SendMsgSaver" scope="singleton">
+		<property name="storeMessageDao" ref="storeMessageDao"/>
+		<property name="weiXinFansManager" ref="weiXinFansManager"/>
+	</bean>
+	
+	<bean id="webPageSender" class="com.barrage.worker.WebPageSender" scope="singleton">
 	</bean>
 	
 	<!-- db manager  -->
@@ -25,10 +40,6 @@
 	<bean id="channelManager" class="com.barrage.service.ChannelManager" scope="singleton">
 		<property name="channelDao" ref="channelDao"/>
 		<property name="refreshPeriod" value="3600000"/>
-	</bean>
-	
-	<bean id="storeMessageManager" class="com.barrage.service.StoreMessageManager" scope="singleton">
-		<property name="storeMessageDao" ref="storeMessageDao"/>
 	</bean>
 	
 	<bean id="userChannelRelationManager" class="com.barrage.service.UserChannelRelationManager" scope="singleton">

@@ -35,7 +35,7 @@ public class BarrageFilter implements Filter {
 		this.pattern = para;
 
 		// 替换汉字为UNICODE
-//		pattern = replaceChinese(pattern);
+		// pattern = replaceChinese(pattern);
 
 		// 替换[content]等标示符
 		pattern = pattern.replace("[title]", CONTENT_PATTERN);

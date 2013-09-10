@@ -1,6 +1,9 @@
-package com.weixin.httpsend;
+package com.weixin.send;
 
-public class HttpSendMsg {
+/**
+ * 发送消息类
+ */
+public class SendMsg {
 
 	private String fromUserName;
 
@@ -8,7 +11,7 @@ public class HttpSendMsg {
 
 	private String content;
 
-	public HttpSendMsg(String fromUserName, Long channelId, String content) {
+	public SendMsg(String fromUserName, Long channelId, String content) {
 		super();
 		this.fromUserName = fromUserName;
 		this.channelId = channelId;

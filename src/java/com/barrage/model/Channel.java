@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * 频道表
  */
-public class Channel extends BaseObject {
+public class Channel {
 
 	private Long id;
 
@@ -27,7 +27,7 @@ public class Channel extends BaseObject {
 	/**
 	 * 是否需要保存消息,默认0,0=不保存,1=保存
 	 */
-	private Long isStore = 0l;
+	private Long isStore = 1l;
 
 	/**
 	 * 频道到期时间,null表示永不到期
@@ -37,7 +37,7 @@ public class Channel extends BaseObject {
 	/**
 	 * 输出方式,二级制数字,默认1,个位0=不输出到微信界面,1=输出到微信界面, 十位0=不输出到WEB界面,1=输出到WEB界面
 	 */
-	private Long outputType = 1l;
+	private Long outputType = 10l;
 
 	public Long getId() {
 		return id;

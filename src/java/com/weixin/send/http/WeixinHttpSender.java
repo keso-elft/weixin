@@ -1,4 +1,4 @@
-package com.weixin.httpsend;
+package com.weixin.send.http;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -11,12 +11,14 @@ import com.barrage.service.ChannelManager;
 import com.barrage.service.UserChannelRelationManager;
 import com.weixin.common.WeiXinFans;
 import com.weixin.common.WeiXinFansManager;
+import com.weixin.send.SendMsg;
+import com.weixin.send.Sender;
 
-public class WeixinHttpSender {
+public class WeixinHttpSender implements Sender {
 
 	protected Logger log = LogManager.getLogger("weixinServer");
 
-	private BlockingQueue<HttpSendMsg> cache = new ArrayBlockingQueue<HttpSendMsg>(1000);
+	private BlockingQueue<SendMsg> cache = new ArrayBlockingQueue<SendMsg>(1000);
 
 	private UserChannelRelationManager userChannelRelationManager;
 
@@ -26,8 +28,8 @@ public class WeixinHttpSender {
 
 	boolean isStop = false;
 
-	public boolean send(String fromUserName, Long channelId, String content) {
-		return cache.offer(new HttpSendMsg(fromUserName, channelId, content));
+	public boolean send(SendMsg sendMsg) {
+		return cache.offer(sendMsg);
 	}
 
 	public void start() {
@@ -37,18 +39,14 @@ public class WeixinHttpSender {
 					public void run() {
 						while (true) {
 							try {
-								HttpSendMsg msg = (HttpSendMsg) cache.take();
+								SendMsg msg = (SendMsg) cache.take();
 								if (msg == null)
 									continue;
 
 								if (!HttpSendTools.haseCookie())
 									HttpSendTools.auth();
 
-								// 获取频道 TODO 根据频道类型发送指定客户端
 								long channelId = msg.getChannelId();
-								// Channel channel =
-								// channelManager.findChannelId(channelId);
-
 								// 群发
 								List<String> list = userChannelRelationManager.getChannelAllUser(channelId);
 								for (String fromUserName : list) {

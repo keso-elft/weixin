@@ -13,11 +13,10 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.barrage.service.ChannelManager;
-import com.barrage.service.StoreMessageManager;
 import com.barrage.service.UserChannelRelationManager;
+import com.barrage.worker.WeixinWorker;
 import com.weixin.common.WeiXinFans;
 import com.weixin.common.WeiXinFansManager;
-import com.weixin.httpsend.WeixinHttpSender;
 import com.weixin.server.message.request.InMessage;
 import com.weixin.server.message.response.OutMessage;
 import com.weixin.server.model.Result;
@@ -35,18 +34,16 @@ public class Server {
 
 	public SessionManager sessionManager;
 
-	private WeixinHttpSender weixinSender;
+	private WeixinWorker weixinWorker;
 
 	public WeiXinFansManager userManager;
 
 	private ChannelManager channelManager;
 
-	private StoreMessageManager storeMessageManager;
-
 	private UserChannelRelationManager userChannelRelationManager;
 
 	/**
-	 * 服务器初始化
+	 * 服务器初始化,各个缓存、线程初始化
 	 * @param config
 	 */
 	public void init(FilterConfig config) {
@@ -56,14 +53,12 @@ public class Server {
 		serviceManager = ServiceManager.getInstance();
 		sessionManager = (SessionManager) context.getBean("sessionManager");
 
-		weixinSender = (WeixinHttpSender) context.getBean("weixinSender");
-		weixinSender.start();
+		weixinWorker = (WeixinWorker) context.getBean("weixinWorker");
+		weixinWorker.init();
 		userManager = (WeiXinFansManager) context.getBean("weiXinFansManager");
 		userManager.init();
 		channelManager = (ChannelManager) context.getBean("channelManager");
 		channelManager.init();
-		storeMessageManager = (StoreMessageManager) context.getBean("storeMessageManager");
-		storeMessageManager.init();
 		userChannelRelationManager = (UserChannelRelationManager) context.getBean("userChannelRelationManager");
 		userChannelRelationManager.init();
 

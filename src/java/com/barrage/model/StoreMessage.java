@@ -17,6 +17,11 @@ public class StoreMessage {
 
 	private Date sendTime;
 
+	public String toString() {
+		return "[StoreMessage]userId=" + userId + ",channelId=" + channelId + ",content=" + content + ",sendTime="
+				+ sendTime;
+	}
+
 	public Long getId() {
 		return id;
 	}
