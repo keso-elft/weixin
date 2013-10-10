@@ -1,10 +1,10 @@
-package com.barrage.dao;
+package com.barrage.service;
 
 import java.util.List;
 
 import com.barrage.model.Channel;
 
-public interface ChannelDao {
+public interface ChannelService {
 
 	public Long createChannel(Long userId, String name, String password);
 

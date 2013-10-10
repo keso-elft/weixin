@@ -7,7 +7,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.barrage.model.Channel;
-import com.barrage.service.ChannelManager;
+import com.barrage.service.ChannelService;
 import com.weixin.send.SendMsg;
 import com.weixin.send.Sender;
 import com.weixin.send.http.WeixinHttpSender;
@@ -18,7 +18,7 @@ public class WeixinWorker implements Sender {
 
 	private BlockingQueue<SendMsg> cache = new ArrayBlockingQueue<SendMsg>(1000);
 
-	private ChannelManager channelManager;
+	private ChannelService channelManager;
 
 	private WeixinHttpSender weixinHttpSender;
 
@@ -90,11 +90,11 @@ public class WeixinWorker implements Sender {
 		isStop = true;
 	}
 
-	public ChannelManager getChannelManager() {
+	public ChannelService getChannelManager() {
 		return channelManager;
 	}
 
-	public void setChannelManager(ChannelManager channelManager) {
+	public void setChannelManager(ChannelService channelManager) {
 		this.channelManager = channelManager;
 	}
 

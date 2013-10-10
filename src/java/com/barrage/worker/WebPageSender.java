@@ -35,7 +35,7 @@ public class WebPageSender implements Sender {
 
 								long channelId = msg.getChannelId();
 								// TODO 显示到页面上
-								
+								// HttpClient client = new HttpClient();
 								log.info("[WebPageSender]消息显示到页面上: " + msg);
 
 							} catch (Throwable e) {
@@ -50,8 +50,31 @@ public class WebPageSender implements Sender {
 		}
 	}
 
+	public void sendWebMsg(String msg) {
+		String url = "ws://localhost:8888/chatsocket";
+
+		// HttpClient http = new HttpClient();
+		// PostMethod post = new PostMethod(url.toString());
+
+		// try {
+		// post.setDoAuthentication(true);
+		//
+		// post.setParameter("msg", msg);
+		// http.executeMethod(post);
+		//
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// } finally {
+		// post.releaseConnection();
+		// }
+	}
+
 	public void stop() {
 		isStop = true;
 	}
 
+	public static void main(String[] args) {
+		WebPageSender sender = new WebPageSender();
+		sender.sendWebMsg("{'body':'asdsad','_xsrf':'dbfd51d2ae3740e3b1909982c6af3363'}");
+	}
 }

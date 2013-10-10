@@ -3,25 +3,25 @@ package com.barrage.processer;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.barrage.model.Channel;
-import com.barrage.service.ChannelManager;
-import com.barrage.service.UserChannelRelationManager;
-import com.weixin.common.WeiXinFansManager;
+import com.barrage.service.ChannelService;
+import com.barrage.service.UserChannelRelationService;
+import com.weixin.common.UserCacheManager;
 import com.weixin.server.message.request.InMessage;
 import com.weixin.server.model.ProcessError;
 import com.weixin.server.processor.Processor;
 
 public class JoinChannelProcesser implements Processor {
 
-	ChannelManager channelManager;
+	ChannelService channelManager;
 
-	WeiXinFansManager fansManager;
+	UserCacheManager fansManager;
 
-	UserChannelRelationManager userChannelRelationManager;
+	UserChannelRelationService userChannelRelationManager;
 
 	public void init(WebApplicationContext context) {
-		channelManager = (ChannelManager) context.getBean("channelManager");
-		fansManager = (WeiXinFansManager) context.getBean("weiXinFansManager");
-		userChannelRelationManager = (UserChannelRelationManager) context.getBean("userChannelRelationManager");
+		channelManager = (ChannelService) context.getBean("channelManager");
+		fansManager = (UserCacheManager) context.getBean("weiXinFansManager");
+		userChannelRelationManager = (UserChannelRelationService) context.getBean("userChannelRelationManager");
 	}
 
 	public Object process(InMessage msg) {
@@ -36,7 +36,7 @@ public class JoinChannelProcesser implements Processor {
 			} catch (Exception e) {
 				return new ProcessError("频道号错误");
 			}
-			Channel channel = channelManager.findChannelId(id);
+			Channel channel = channelManager.findChannelById(id);
 			if (channel == null)
 				return new ProcessError("无此频道");
 			if (channel.getPassword() != null && channel.getPassword().length() != 0) {

@@ -17,7 +17,7 @@ import org.jsoup.select.Elements;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.weixin.Constants;
-import com.weixin.common.WeiXinFans;
+import com.weixin.common.User;
 import com.weixin.util.MD5;
 
 /** 
@@ -65,7 +65,7 @@ public class HttpSendTools {
 	/**
 	 * 获取关注列表
 	 */
-	public static List<WeiXinFans> getFans() throws IOException {
+	public static List<User> getFans() throws IOException {
 		if (currentCookies == null)
 			auth();
 
@@ -76,7 +76,7 @@ public class HttpSendTools {
 		Element element = eles.get(0);
 		String json = element.data();
 		Gson gson = new Gson();
-		return gson.fromJson(json, new TypeToken<List<WeiXinFans>>() {
+		return gson.fromJson(json, new TypeToken<List<User>>() {
 		}.getType());
 	}
 

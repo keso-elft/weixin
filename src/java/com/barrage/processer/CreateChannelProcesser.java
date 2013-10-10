@@ -2,28 +2,28 @@ package com.barrage.processer;
 
 import org.springframework.web.context.WebApplicationContext;
 
-import com.barrage.service.ChannelManager;
-import com.weixin.common.WeiXinFans;
-import com.weixin.common.WeiXinFansManager;
+import com.barrage.service.ChannelService;
+import com.weixin.common.User;
+import com.weixin.common.UserCacheManager;
 import com.weixin.server.message.request.InMessage;
 import com.weixin.server.model.ProcessError;
 import com.weixin.server.processor.Processor;
 
 public class CreateChannelProcesser implements Processor {
 
-	ChannelManager channelManager;
+	ChannelService channelManager;
 
-	WeiXinFansManager fansManager;
+	UserCacheManager fansManager;
 
 	public void init(WebApplicationContext context) {
-		channelManager = (ChannelManager) context.getBean("channelManager");
-		fansManager = (WeiXinFansManager) context.getBean("weiXinFansManager");
+		channelManager = (ChannelService) context.getBean("channelManager");
+		fansManager = (UserCacheManager) context.getBean("weiXinFansManager");
 	}
 
 	public Object process(InMessage msg) {
 		String content = msg.getContent();
 		String fromUserName = msg.getFromUserName();
-		WeiXinFans fan = fansManager.getUser(fromUserName);
+		User fan = fansManager.getUser(fromUserName);
 		if (fan == null)
 			return new ProcessError("找不到该用户");
 

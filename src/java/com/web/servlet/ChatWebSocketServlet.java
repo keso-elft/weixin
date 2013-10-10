@@ -19,6 +19,8 @@ import org.apache.catalina.websocket.WsOutbound;
 
 @WebServlet("/chat")
 public class ChatWebSocketServlet extends WebSocketServlet {
+
+	// Map(channelId,List<WsOutbound>)
 	private final Map<Integer, WsOutbound> map = new HashMap<Integer, WsOutbound>();
 
 	private static final long serialVersionUID = -1058445282919079067L;

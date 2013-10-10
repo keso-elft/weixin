@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.weixin.common.WeiXinFans;
+import com.weixin.common.User;
 
 /**
  * 会话管理器
@@ -36,7 +36,7 @@ public class SessionManager {
 	/**
 	 * 会话连入,若无该用户,需创建user后连入
 	 */
-	public synchronized void accessSession(WeiXinFans user) {
+	public synchronized void accessSession(User user) {
 		Session session = sessionMap.get(user.getFromUserName());
 		if (session != null) {
 			session.access();

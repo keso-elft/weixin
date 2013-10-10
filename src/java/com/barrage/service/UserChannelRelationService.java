@@ -1,11 +1,11 @@
-package com.barrage.dao;
+package com.barrage.service;
 
-public interface UserChannelRelationDao {
+public interface UserChannelRelationService {
 
 	public void join(String fromUserName, long channelId);
 
 	public void quit(String fromUserName);
-	
+
 	public Long getJoinChannelId(String fromUserName);
 
 }

@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.barrage.dao.StoreMessageDao;
 import com.barrage.model.StoreMessage;
-import com.weixin.common.WeiXinFansManager;
+import com.weixin.common.UserCacheManager;
 import com.weixin.send.SendMsg;
 import com.weixin.send.Sender;
 
@@ -24,7 +24,7 @@ public class SendMsgSaver implements Sender {
 
 	StoreMessageDao storeMessageDao;
 
-	WeiXinFansManager weiXinFansManager;
+	UserCacheManager weiXinFansManager;
 
 	boolean isStop = false;
 	
@@ -77,11 +77,11 @@ public class SendMsgSaver implements Sender {
 		this.storeMessageDao = storeMessageDao;
 	}
 
-	public WeiXinFansManager getWeiXinFansManager() {
+	public UserCacheManager getWeiXinFansManager() {
 		return weiXinFansManager;
 	}
 
-	public void setWeiXinFansManager(WeiXinFansManager weiXinFansManager) {
+	public void setWeiXinFansManager(UserCacheManager weiXinFansManager) {
 		this.weiXinFansManager = weiXinFansManager;
 	}
 

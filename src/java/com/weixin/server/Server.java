@@ -12,11 +12,11 @@ import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.barrage.service.ChannelManager;
-import com.barrage.service.UserChannelRelationManager;
+import com.barrage.service.ChannelService;
+import com.barrage.service.UserChannelRelationService;
 import com.barrage.worker.WeixinWorker;
-import com.weixin.common.WeiXinFans;
-import com.weixin.common.WeiXinFansManager;
+import com.weixin.common.User;
+import com.weixin.common.UserCacheManager;
 import com.weixin.server.message.request.InMessage;
 import com.weixin.server.message.response.OutMessage;
 import com.weixin.server.model.Result;
@@ -36,11 +36,11 @@ public class Server {
 
 	private WeixinWorker weixinWorker;
 
-	public WeiXinFansManager userManager;
+	public UserCacheManager userManager;
 
-	private ChannelManager channelManager;
+	private ChannelService channelManager;
 
-	private UserChannelRelationManager userChannelRelationManager;
+	private UserChannelRelationService userChannelRelationManager;
 
 	/**
 	 * 服务器初始化,各个缓存、线程初始化
@@ -55,11 +55,11 @@ public class Server {
 
 		weixinWorker = (WeixinWorker) context.getBean("weixinWorker");
 		weixinWorker.init();
-		userManager = (WeiXinFansManager) context.getBean("weiXinFansManager");
+		userManager = (UserCacheManager) context.getBean("weiXinFansManager");
 		userManager.init();
-		channelManager = (ChannelManager) context.getBean("channelManager");
+		channelManager = (ChannelService) context.getBean("channelManager");
 		channelManager.init();
-		userChannelRelationManager = (UserChannelRelationManager) context.getBean("userChannelRelationManager");
+		userChannelRelationManager = (UserChannelRelationService) context.getBean("userChannelRelationManager");
 		userChannelRelationManager.init();
 
 		Collection<Service> services = serviceManager.getServices();
@@ -81,7 +81,7 @@ public class Server {
 
 		// 构造user,session
 		String fromUserName = in.getFromUserName();
-		WeiXinFans user = userManager.getUser(fromUserName);
+		User user = userManager.getUser(fromUserName);
 		if (user == null) {
 			user = userManager.accessUser(fromUserName);
 		}

@@ -1,15 +1,14 @@
 package com.barrage.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
-import com.weixin.common.WeiXinFans;
+import com.weixin.common.User;
 
-public interface UserDao extends EntityDao<WeiXinFans, Serializable> {
+public interface UserDao {
 
-	public WeiXinFans getUserByFromUserName(String fromUserName);
+	public User getUserByFromUserName(String fromUserName);
 
-	public List<WeiXinFans> getAllValidUser();
+	public List<User> getAllValidUser();
 
 	public void createUser(String fromUserName);
 

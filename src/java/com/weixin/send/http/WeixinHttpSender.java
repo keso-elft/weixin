@@ -7,10 +7,10 @@ import java.util.concurrent.BlockingQueue;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import com.barrage.service.ChannelManager;
-import com.barrage.service.UserChannelRelationManager;
-import com.weixin.common.WeiXinFans;
-import com.weixin.common.WeiXinFansManager;
+import com.barrage.service.ChannelService;
+import com.barrage.service.UserChannelRelationService;
+import com.weixin.common.User;
+import com.weixin.common.UserCacheManager;
 import com.weixin.send.SendMsg;
 import com.weixin.send.Sender;
 
@@ -20,11 +20,11 @@ public class WeixinHttpSender implements Sender {
 
 	private BlockingQueue<SendMsg> cache = new ArrayBlockingQueue<SendMsg>(1000);
 
-	private UserChannelRelationManager userChannelRelationManager;
+	private UserChannelRelationService userChannelRelationManager;
 
-	private WeiXinFansManager weiXinFansManager;
+	private UserCacheManager weiXinFansManager;
 
-	private ChannelManager channelManager;
+	private ChannelService channelManager;
 
 	boolean isStop = false;
 
@@ -52,7 +52,7 @@ public class WeixinHttpSender implements Sender {
 								for (String fromUserName : list) {
 									// 自己不发
 									if (!msg.getFromUserName().equals(fromUserName)) {
-										WeiXinFans fan = weiXinFansManager.getUser(fromUserName);
+										User fan = weiXinFansManager.getUser(fromUserName);
 										if (fan.getFakeId() != null) {
 											String rtnMessage = HttpSendTools
 													.sendMsg(msg.getContent(), fan.getFakeId());
@@ -79,27 +79,27 @@ public class WeixinHttpSender implements Sender {
 		isStop = true;
 	}
 
-	public UserChannelRelationManager getUserChannelRelationManager() {
+	public UserChannelRelationService getUserChannelRelationManager() {
 		return userChannelRelationManager;
 	}
 
-	public void setUserChannelRelationManager(UserChannelRelationManager userChannelRelationManager) {
+	public void setUserChannelRelationManager(UserChannelRelationService userChannelRelationManager) {
 		this.userChannelRelationManager = userChannelRelationManager;
 	}
 
-	public WeiXinFansManager getWeiXinFansManager() {
+	public UserCacheManager getWeiXinFansManager() {
 		return weiXinFansManager;
 	}
 
-	public void setWeiXinFansManager(WeiXinFansManager weiXinFansManager) {
+	public void setWeiXinFansManager(UserCacheManager weiXinFansManager) {
 		this.weiXinFansManager = weiXinFansManager;
 	}
 
-	public void setChannelManager(ChannelManager channelManager) {
+	public void setChannelManager(ChannelService channelManager) {
 		this.channelManager = channelManager;
 	}
 
-	public ChannelManager getChannelManager() {
+	public ChannelService getChannelManager() {
 		return channelManager;
 	}
 

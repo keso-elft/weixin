@@ -5,8 +5,8 @@ import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import com.weixin.common.WeiXinFans;
-import com.weixin.common.WeiXinFansManager;
+import com.weixin.common.User;
+import com.weixin.common.UserCacheManager;
 import com.weixin.server.service.ServiceManager;
 import com.weixin.server.session.Session;
 import com.weixin.server.session.SessionManager;
@@ -17,14 +17,14 @@ public class Task1 {
 
 	SessionManager sessionManager;
 
-	WeiXinFansManager weiXinFansManager;
+	UserCacheManager weiXinFansManager;
 
 	public void run() {
 
 		weiXinFansManager.accessUser("1000");
-		List<WeiXinFans> users = weiXinFansManager.getUsers();
+		List<User> users = weiXinFansManager.getUsers();
 
-		for (WeiXinFans user : users) {
+		for (User user : users) {
 			// 发送
 			String content = ServiceManager.getInstance().getService("liveNotify").getServiceSendMessage();
 			content = content.replace("[content]", "aaa");
@@ -46,11 +46,11 @@ public class Task1 {
 		this.sessionManager = sessionManager;
 	}
 
-	public WeiXinFansManager getWeiXinFansManager() {
+	public UserCacheManager getWeiXinFansManager() {
 		return weiXinFansManager;
 	}
 
-	public void setWeiXinFansManager(WeiXinFansManager weiXinFansManager) {
+	public void setWeiXinFansManager(UserCacheManager weiXinFansManager) {
 		this.weiXinFansManager = weiXinFansManager;
 	}
 

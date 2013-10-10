@@ -3,14 +3,14 @@ package com.weixin.server.session;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.weixin.common.WeiXinFans;
+import com.weixin.common.User;
 
 public class Session {
 
 	/**
 	 * 用户
 	 */
-	private WeiXinFans user;
+	private User user;
 
 	/**
 	 * 上次会话时间
@@ -22,7 +22,7 @@ public class Session {
 	 */
 	private Map<String, Object> record = new HashMap<String, Object>(); //
 
-	public Session(WeiXinFans user) {
+	public Session(User user) {
 		this.setUser(user);
 		lastAccessedTime = System.currentTimeMillis();
 	}
@@ -67,11 +67,11 @@ public class Session {
 		record.remove(key);
 	}
 
-	public void setUser(WeiXinFans user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
-	public WeiXinFans getUser() {
+	public User getUser() {
 		return user;
 	}
 }
