@@ -2,8 +2,8 @@ package com.barrage.processer;
 
 import org.springframework.web.context.WebApplicationContext;
 
+import com.barrage.model.User;
 import com.barrage.service.ChannelService;
-import com.weixin.common.User;
 import com.weixin.common.UserCacheManager;
 import com.weixin.server.message.request.InMessage;
 import com.weixin.server.model.ProcessError;

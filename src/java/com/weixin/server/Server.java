@@ -12,10 +12,10 @@ import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.barrage.model.User;
 import com.barrage.service.ChannelService;
 import com.barrage.service.UserChannelRelationService;
 import com.barrage.worker.WeixinWorker;
-import com.weixin.common.User;
 import com.weixin.common.UserCacheManager;
 import com.weixin.server.message.request.InMessage;
 import com.weixin.server.message.response.OutMessage;

@@ -1,10 +1,10 @@
-package com.barrage.dao;
+package com.barrage.service;
 
 import java.util.List;
 
 import com.barrage.model.User;
 
-public interface UserDao {
+public interface UserService {
 
 	public User getUserByFromUserName(String fromUserName);
 

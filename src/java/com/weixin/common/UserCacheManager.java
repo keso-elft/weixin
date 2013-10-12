@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.barrage.dao.UserDao;
+import com.barrage.model.User;
 import com.weixin.send.http.HttpSendTools;
 
 /**

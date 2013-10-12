@@ -1,6 +1,6 @@
-package com.barrage.dao;
+package com.barrage.service;
 
-public interface StoreMessageDao {
+public interface StoreMessageService {
 
 	public void saveMessage(Long userId, Long channelId, String content);
 

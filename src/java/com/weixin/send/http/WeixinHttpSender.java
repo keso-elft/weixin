@@ -7,9 +7,9 @@ import java.util.concurrent.BlockingQueue;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.barrage.model.User;
 import com.barrage.service.ChannelService;
 import com.barrage.service.UserChannelRelationService;
-import com.weixin.common.User;
 import com.weixin.common.UserCacheManager;
 import com.weixin.send.SendMsg;
 import com.weixin.send.Sender;

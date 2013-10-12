@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.weixin.common.User;
+import com.barrage.model.User;
 
 /**
  * 会话管理器

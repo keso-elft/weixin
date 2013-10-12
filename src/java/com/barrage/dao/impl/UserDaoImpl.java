@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.barrage.dao.UserDao;
-import com.weixin.common.User;
+import com.barrage.model.User;
 
 public class UserDaoImpl extends SuperDao implements UserDao {
 

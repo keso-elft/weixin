@@ -1,4 +1,4 @@
-package com.web.servlet;
+package com.barrage.web.servlet;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

@@ -1,4 +1,4 @@
-package com.weixin.common;
+package com.barrage.model;
 
 import java.util.Date;
 

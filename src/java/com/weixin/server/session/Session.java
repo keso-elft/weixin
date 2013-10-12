@@ -3,7 +3,7 @@ package com.weixin.server.session;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.weixin.common.User;
+import com.barrage.model.User;
 
 public class Session {
 

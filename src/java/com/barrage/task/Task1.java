@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import com.weixin.common.User;
+import com.barrage.model.User;
 import com.weixin.common.UserCacheManager;
 import com.weixin.server.service.ServiceManager;
 import com.weixin.server.session.Session;

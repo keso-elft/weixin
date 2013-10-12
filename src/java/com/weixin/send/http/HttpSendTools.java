@@ -14,10 +14,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.barrage.model.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.weixin.Constants;
-import com.weixin.common.User;
 import com.weixin.util.MD5;
 
 /** 

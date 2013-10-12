@@ -1,4 +1,4 @@
-package com.barrage.filter;
+package com.barrage.web.filter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
