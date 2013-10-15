@@ -12,4 +12,6 @@ public interface UserDao {
 
 	public void createUser(String fromUserName);
 
+	public void saveUser(User user);
+
 }

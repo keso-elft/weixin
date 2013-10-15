@@ -7,24 +7,26 @@
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref local="task1Job" />
+				<!--
+					<ref local="task1Job" />
+					-->
 			</list> 
 		</property>
 	</bean>
-	
-	<bean name="task1" class="com.barrage.task.Task1">
-		<property name="sessionManager" ref="sessionManager" />
-		<property name="weiXinFansManager" ref="weiXinFansManager" />
-	</bean>
-
-	<bean id="task1Job" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail">
-			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-				<property name="targetObject" ref="task1" />
-				<property name="targetMethod" value="run" />
+	<!--
+			<bean name="task1" class="com.barrage.task.Task1">
+				<property name="sessionManager" ref="sessionManager" />
+				<property name="weiXinFansManager" ref="weiXinFansManager" />
 			</bean>
-		</property>
-		<property name="cronExpression" value="0 0/1 * * * ?" />
-	</bean>
 
+			<bean id="task1Job" class="org.springframework.scheduling.quartz.CronTriggerBean">
+				<property name="jobDetail">
+					<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+						<property name="targetObject" ref="task1" />
+						<property name="targetMethod" value="run" />
+					</bean>
+				</property>
+				<property name="cronExpression" value="0 0/1 * * * ?" />
+			</bean>
+		-->
 </beans>

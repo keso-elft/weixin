@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-	<class name="com.weixin.common.WeiXinFans" table="user"
+	<class name="com.barrage.model.User" table="user"
 		dynamic-update="true" dynamic-insert="true">
 
 		<id name="id" type="java.lang.Long" column="id">

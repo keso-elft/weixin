@@ -21,7 +21,7 @@
 
 	<filter>
 		<filter-name>WeixinFilter</filter-name>
-		<filter-class>com.weixin.server.WeixinFilter</filter-class>
+		<filter-class>com.barrage.web.server.WeixinFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>WeixinFilter</filter-name>
@@ -29,14 +29,14 @@
 	</filter-mapping>
 
 	<servlet>
-		<servlet-name>chat</servlet-name>
-		<servlet-class>com.web.servlet.ChatWebSocketServlet</servlet-class>
+		<servlet-name>comet</servlet-name>
+		<servlet-class>com.barrage.web.output.servlet.ChannelCometServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>chat</servlet-name>
-		<url-pattern>/chat/*</url-pattern>
+		<servlet-name>comet</servlet-name>
+		<url-pattern>/comet/*</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>

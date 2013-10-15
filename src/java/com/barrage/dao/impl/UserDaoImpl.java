@@ -11,7 +11,7 @@ public class UserDaoImpl extends SuperDao implements UserDao {
 	@Override
 	public User getUserByFromUserName(String fromUserName) {
 		@SuppressWarnings("unchecked")
-		List<User> list = getHibernateTemplate().find("from WeiXinFans where fromUserName = ?", fromUserName);
+		List<User> list = getHibernateTemplate().find("from User where fromUserName = ?", fromUserName);
 
 		User user = null;
 		if (list != null && list.size() > 0) {
@@ -23,7 +23,7 @@ public class UserDaoImpl extends SuperDao implements UserDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<User> getAllValidUser() {
-		return getHibernateTemplate().find("from WeiXinFans");
+		return getHibernateTemplate().find(" from User");
 	}
 
 	@Override
@@ -32,5 +32,10 @@ public class UserDaoImpl extends SuperDao implements UserDao {
 		user.setFromUserName(fromUserName);
 		user.setLastAccessedTime(new Date());
 		getHibernateTemplate().save(user);
+	}
+	
+	@Override
+	public void saveUser(User user) {
+		getHibernateTemplate().saveOrUpdate(user);
 	}
 }

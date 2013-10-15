@@ -2,34 +2,40 @@ package com.barrage.service.impl;
 
 import java.util.List;
 
+import com.barrage.dao.UserDao;
 import com.barrage.model.User;
 import com.barrage.service.UserService;
 
 public class UserServiceImpl implements UserService {
 
-	private UserService userService;
+	private UserDao userDao;
 
 	@Override
 	public User getUserByFromUserName(String fromUserName) {
-		return userService.getUserByFromUserName(fromUserName);
+		return userDao.getUserByFromUserName(fromUserName);
 	}
 
 	@Override
 	public List<User> getAllValidUser() {
-		return userService.getAllValidUser();
+		return userDao.getAllValidUser();
 	}
 
 	@Override
 	public void createUser(String fromUserName) {
-		userService.createUser(fromUserName);
+		userDao.createUser(fromUserName);
 	}
 
-	public UserService getUserService() {
-		return userService;
+	@Override
+	public void saveUser(User user) {
+		userDao.saveUser(user);
 	}
 
-	public void setUserService(UserService userService) {
-		this.userService = userService;
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 
 }

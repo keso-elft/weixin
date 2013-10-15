@@ -24,8 +24,6 @@
 
 		<property name="status" type="java.lang.Long" column="status" />
 
-		<property name="isStore" type="java.lang.Long" column="is_store" />
-
 		<property name="endTime" type="java.util.Date" column="end_time" />
 
 		<property name="outputType" type="java.lang.Long" column="output_type" />

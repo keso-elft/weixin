@@ -25,17 +25,12 @@ public class Channel {
 	private Long status = 0l;
 
 	/**
-	 * 是否需要保存消息,默认0,0=不保存,1=保存
-	 */
-	private Long isStore = 1l;
-
-	/**
 	 * 频道到期时间,null表示永不到期
 	 */
 	private Date endTime;
 
 	/**
-	 * 输出方式,二级制数字,默认1,个位0=不输出到微信界面,1=输出到微信界面, 十位0=不输出到WEB界面,1=输出到WEB界面
+	 * 输出方式,二级制数字,默认1,个位0=不输出到微信界面,1=输出到微信界面, 十位0=不输出到WEB界面,1=输出到WEB界面, 百位0=不输出到数据库,1=输出到数据库
 	 */
 	private Long outputType = 10l;
 
@@ -85,14 +80,6 @@ public class Channel {
 
 	public void setStatus(Long status) {
 		this.status = status;
-	}
-
-	public Long getIsStore() {
-		return isStore;
-	}
-
-	public void setIsStore(Long isStore) {
-		this.isStore = isStore;
 	}
 
 	public Date getEndTime() {

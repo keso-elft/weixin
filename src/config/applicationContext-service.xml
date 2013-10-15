@@ -5,46 +5,39 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 	
-	<!-- manager  -->
+	<!-- service  -->
 	
-	<bean id="sessionManager" class="com.weixin.server.session.SessionManager" scope="singleton"/>
+	<bean id="sessionManager" class="com.barrage.web.server.session.SessionManager" scope="singleton"/>
 	
-	<bean id="weixinHttpSender" class="com.weixin.send.http.WeixinHttpSender" scope="singleton">
-		<property name="userChannelRelationManager" ref="userChannelRelationManager"/>
-		<property name="weiXinFansManager" ref="weiXinFansManager"/>
-		<property name="channelManager" ref="channelManager"/>
-	</bean>
-	
-	<bean id="weixinWorker" class="com.barrage.worker.WeixinWorker" scope="singleton">
-		<property name="channelManager" ref="channelManager"/>
-		<property name="weixinHttpSender" ref="weixinHttpSender"/>
-		<property name="webPageSender" ref="webPageSender"/>
+	<bean id="weixinOutputer" class="com.barrage.web.output.WeixinOutputer" scope="singleton">
 		<property name="sendMsgSaver" ref="sendMsgSaver"/>
 	</bean>
 	
-	<bean id="sendMsgSaver" class="com.barrage.worker.SendMsgSaver" scope="singleton">
+	<bean id="sendMsgSaver" class="com.barrage.web.output.db.SendMsgSaver" scope="singleton">
 		<property name="storeMessageDao" ref="storeMessageDao"/>
-		<property name="weiXinFansManager" ref="weiXinFansManager"/>
 	</bean>
 	
-	<bean id="webPageSender" class="com.barrage.worker.WebPageSender" scope="singleton">
-	</bean>
-	
-	<!-- db manager  -->
-	
-	<bean id="weiXinFansManager" class="com.weixin.common.WeiXinFansManager" scope="singleton">
-		<property name="userDao" ref="userDao"/>
+	<bean id="userCacheManager" class="com.barrage.web.server.cache.UserCacheManager" scope="singleton">
+		<property name="userService" ref="userService"/>
 		<property name="sessionRefreshPeriod" value="3600000"/>
 	</bean>
 	
-	<bean id="channelManager" class="com.barrage.service.ChannelManager" scope="singleton">
-		<property name="channelDao" ref="channelDao"/>
-		<property name="refreshPeriod" value="3600000"/>
+	<!-- db service  -->
+	
+	<bean id="userService" class="com.barrage.service.impl.UserServiceImpl" scope="singleton">
+		<property name="userDao" ref="userDao"/>
 	</bean>
 	
-	<bean id="userChannelRelationManager" class="com.barrage.service.UserChannelRelationManager" scope="singleton">
+	<bean id="storeMessageService" class="com.barrage.service.impl.StoreMessageServiceImpl" scope="singleton">
+		<property name="storeMessageDao" ref="storeMessageDao"/>
+	</bean>
+	
+	<bean id="channelService" class="com.barrage.service.impl.ChannelServiceImpl" scope="singleton">
+		<property name="channelDao" ref="channelDao"/>
+	</bean>
+	
+	<bean id="userChannelRelationService" class="com.barrage.service.impl.UserChannelRelationServiceImpl" scope="singleton">
 		<property name="userChannelRelationDao" ref="userChannelRelationDao"/>
-		<property name="refreshPeriod" value="3600000"/>
 	</bean>
 	
 </beans>

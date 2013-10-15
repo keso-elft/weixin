@@ -12,6 +12,8 @@ public class ChannelDaoImpl extends SuperDao implements ChannelDao {
 		Channel channel = new Channel();
 		channel.setName(name);
 		channel.setPassword(password);
+		// TODO 所有类型
+		channel.setOutputType(7l);
 		channel.setCreateUserId(userId);
 		channel.setCreateTime(new Date());
 

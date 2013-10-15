@@ -6,10 +6,10 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.barrage.model.User;
-import com.weixin.common.UserCacheManager;
-import com.weixin.server.service.ServiceManager;
-import com.weixin.server.session.Session;
-import com.weixin.server.session.SessionManager;
+import com.barrage.web.server.cache.UserCacheManager;
+import com.barrage.web.server.service.ServiceManager;
+import com.barrage.web.server.session.Session;
+import com.barrage.web.server.session.SessionManager;
 
 public class Task1 {
 

@@ -1,22 +1,23 @@
 package com.barrage.service.impl;
 
+import com.barrage.dao.StoreMessageDao;
 import com.barrage.service.StoreMessageService;
 
 public class StoreMessageServiceImpl implements StoreMessageService {
 
-	private StoreMessageService storeMessageServiceDao;
+	private StoreMessageDao storeMessageDao;
 
 	@Override
 	public void saveMessage(Long userId, Long channelId, String content) {
-		storeMessageServiceDao.saveMessage(userId, channelId, content);
+		storeMessageDao.saveMessage(userId, channelId, content);
 	}
 
-	public StoreMessageService getStoreMessageServiceDao() {
-		return storeMessageServiceDao;
+	public StoreMessageDao getStoreMessageDao() {
+		return storeMessageDao;
 	}
 
-	public void setStoreMessageServiceDao(StoreMessageService storeMessageServiceDao) {
-		this.storeMessageServiceDao = storeMessageServiceDao;
+	public void setStoreMessageDao(StoreMessageDao storeMessageDao) {
+		this.storeMessageDao = storeMessageDao;
 	}
 
 }
