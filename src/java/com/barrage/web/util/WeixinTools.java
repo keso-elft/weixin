@@ -81,7 +81,7 @@ public final class WeixinTools {
 			}
 		});
 		String temp = params.get(0) + params.get(1) + params.get(2);
-		return SHA1.encode(temp).equals(signature);
+		return SHA1.encode(temp).equalsIgnoreCase(signature);
 	}
 
 	private static final String inputStream2String(InputStream in) throws UnsupportedEncodingException, IOException {

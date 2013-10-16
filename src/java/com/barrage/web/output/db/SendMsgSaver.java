@@ -1,5 +1,7 @@
 package com.barrage.web.output.db;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -7,6 +9,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.barrage.dao.StoreMessageDao;
+import com.barrage.model.StoreMessage;
 import com.barrage.web.output.SendMsg;
 import com.barrage.web.output.Sender;
 
@@ -23,36 +26,38 @@ public class SendMsgSaver implements Sender, Runnable {
 
 	boolean isStop = false;
 
+	private int listSize = 1000;
+
 	@Override
-	public boolean send(SendMsg sendMsg) {
-		return cache.offer(sendMsg);
+	public void send(SendMsg sendMsg) {
+		synchronized (cache) {
+			cache.offer(sendMsg);
+			cache.notify();
+		}
 	}
 
 	@Override
 	public void run() {
-		if (!isStop) {
+		while (!isStop) {
 			try {
-				new Thread() {
-					public void run() {
-						while (true) {
-							try {
-								SendMsg msg = (SendMsg) cache.take();
-								if (msg == null)
-									continue;
+				List<SendMsg> list = new ArrayList<SendMsg>(listSize);
 
-								// TODO 单条存储,有点慢
-								storeMessageDao.saveMessage(msg.getUserId(), msg.getChannelId(), msg.getContent());
-
-								log.info("[SendMsgSaver]消息入库: " + msg);
-
-							} catch (Throwable e) {
-								log.error("消息发送失败", e);
-							}
+				if (cache.drainTo(list, listSize) == 0) {
+					try {
+						synchronized (cache) {
+							cache.wait();
 						}
+					} catch (InterruptedException e) {
 					}
-				}.start();
-			} catch (Exception e) {
-				e.printStackTrace();
+				}
+
+				List<StoreMessage> dbList = SendMsg.toStoreMessages(list);
+				storeMessageDao.saveMessages(dbList);
+
+				log.info("[SendMsgSaver]消息入库: " + list.size() + "条");
+
+			} catch (Throwable e) {
+				log.error("消息发送失败", e);
 			}
 		}
 	}

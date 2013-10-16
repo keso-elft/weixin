@@ -1,5 +1,11 @@
 package com.barrage.web.output;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.barrage.model.StoreMessage;
+
 public class SendMsg {
 
 	private Long userId;
@@ -16,6 +22,22 @@ public class SendMsg {
 		this.channelId = channelId;
 		this.content = content;
 		this.outputType = outputType;
+	}
+	
+	public static List<StoreMessage> toStoreMessages(List<SendMsg> list) {
+		List<StoreMessage> result = new ArrayList<StoreMessage>();
+		if (list != null && !list.isEmpty()) {
+			for (SendMsg msg : list) {
+				StoreMessage temp = new StoreMessage();
+				temp.setUserId(msg.getUserId());
+				temp.setChannelId(msg.getChannelId());
+				temp.setContent(msg.getContent());
+				temp.setSendTime(new Date());
+
+				result.add(temp);
+			}
+		}
+		return result;
 	}
 
 	public String toString() {

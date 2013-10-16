@@ -45,8 +45,8 @@ public class WeixinOutputer implements Sender {
 	/**
 	 * 发送消息处理类统一入口
 	 */
-	public boolean send(SendMsg sendMsg) {
-		return cache.offer(sendMsg);
+	public void send(SendMsg sendMsg) {
+		cache.offer(sendMsg);
 	}
 
 	public class WeixinOutputRunner implements Runnable {

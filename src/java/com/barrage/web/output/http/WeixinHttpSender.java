@@ -17,8 +17,8 @@ public class WeixinHttpSender implements Sender {
 
 	boolean isStop = false;
 
-	public boolean send(SendMsg sendMsg) {
-		return cache.offer(sendMsg);
+	public void send(SendMsg sendMsg) {
+		cache.offer(sendMsg);
 	}
 
 	public void start() {
