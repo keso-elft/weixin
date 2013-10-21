@@ -28,9 +28,9 @@ public class MenuCreateTask {
 
 	public void run() {
 
-		String file_menu = getFileMenu();
-
-		System.out.print(file_menu);
+//		String file_menu = getFileMenu();
+//
+//		System.out.print(file_menu);
 
 		// if (!getUrlMenu().equalsIgnoreCase(file_menu)) {
 		// deleteMenu();

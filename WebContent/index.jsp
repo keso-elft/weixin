@@ -1,8 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="cn">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>公众平台</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta charset="utf-8">
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <style type="text/css">
@@ -12,7 +13,6 @@ body {
 }
 </style>
 <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
-<title>ChannelRoom</title>
 </head>
 <body>
 	<!-- 导航条 -->
@@ -63,6 +63,7 @@ body {
 				</div>
 				<center>
 					<button class="btn btn-primary" id="quitChatroom" onclick="quit()">离开ChannelRoom</button>
+					<hr>
 				</center>
 			</div>
 			<div class="span9">
@@ -73,9 +74,15 @@ body {
 			</div>
 		</div>
 		<hr>
-		<footer>
-		<p>© keso.elft@gmail.com 2013 Based on HTML5 new features</p>
-		</footer>
+	</div>
+	<div class="navbar navbar-fixed-bottom">
+		<div class="navbar-inner">
+			<div class="container">
+				<footer>
+					<p>© keso.elft@gmail.com 2013 Based on HTML 5</p>
+				</footer>
+			</div>
+		</div>
 	</div>
 	<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript">
