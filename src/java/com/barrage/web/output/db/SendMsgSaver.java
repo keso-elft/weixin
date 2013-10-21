@@ -49,12 +49,12 @@ public class SendMsgSaver implements Sender, Runnable {
 						}
 					} catch (InterruptedException e) {
 					}
+				} else {
+					List<StoreMessage> dbList = SendMsg.toStoreMessages(list);
+					storeMessageDao.saveMessages(dbList);
+
+					log.info("[SendMsgSaver]消息入库: " + list.size() + "条");
 				}
-
-				List<StoreMessage> dbList = SendMsg.toStoreMessages(list);
-				storeMessageDao.saveMessages(dbList);
-
-				log.info("[SendMsgSaver]消息入库: " + list.size() + "条");
 
 			} catch (Throwable e) {
 				log.error("消息发送失败", e);

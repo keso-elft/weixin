@@ -28,15 +28,12 @@ public class SendWxMessageTest {
 		String resp1 = authWxMessage(url);
 		System.out.println(resp1);
 
-		// String xmlString = "<xml>" +
-		// "<ToUserName><![CDATA[4422]]></ToUserName>"
-		// + "<FromUserName><![CDATA[1000]]></FromUserName>" +
-		// "<CreateTime>1348831860</CreateTime>"
-		// + "<MsgType><![CDATA[text]]></MsgType>" +
-		// "<Content><![CDATA[ 1 2]]></Content>" + "</xml>";
-		//
-		// String resp2 = submitWxMessage(url, xmlString);
-		// System.out.println(resp2);
+		String xmlString = "<xml>" + "<ToUserName><![CDATA[4422]]></ToUserName>"
+				+ "<FromUserName><![CDATA[1000]]></FromUserName>" + "<CreateTime>1348831860</CreateTime>"
+				+ "<MsgType><![CDATA[text]]></MsgType>" + "<Content><![CDATA[ 1 2]]></Content>" + "</xml>";
+
+		String resp2 = submitWxMessage(url, xmlString);
+		System.out.println(resp2);
 	}
 
 	public static String authWxMessage(String url) {

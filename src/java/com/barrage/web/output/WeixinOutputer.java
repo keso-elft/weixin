@@ -11,7 +11,7 @@ import com.barrage.web.output.servlet.ChannelCometServlet;
 
 public class WeixinOutputer implements Sender {
 
-	protected Logger log = LogManager.getLogger("weixinServer");
+	protected Logger log = LogManager.getLogger("weixinOutput");
 
 	private BlockingQueue<SendMsg> cache = new ArrayBlockingQueue<SendMsg>(1000);
 

@@ -34,7 +34,7 @@ public class StoreMessageDaoImpl extends SuperDao implements StoreMessageDao {
 
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 
-				String sql = "insert into store_message (user_id,channel_id,content,send_time) values(?,?,?,sysdate)";
+				String sql = "insert into store_message (user_id,channel_id,content,send_time) values(?,?,?,now())";
 
 				@SuppressWarnings("deprecation")
 				Connection conn = session.connection();

@@ -4,11 +4,21 @@
 	<service>
 		<service-name>createChannel</service-name>
 		<step no="1">
-			<choise successMsg="频道创建成功,频道号为[content]">
+			<choise successMsg="请输入以下格式来完成创建频道：[频道名称]空格[频道密码]。 \r\n 如：足球 1314" toNo="2">
+				<dispatcher-chain>
+					<dispatcher>
+						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.KeyWordDispatcher</dispatcher-type>
+						<dispatcher-para><![CDATA[V001_CREATE_CHANNEL,创建频道]]></dispatcher-para>
+					</dispatcher>
+				</dispatcher-chain>
+			</choise>
+		</step>
+		<step no="2">
+			<choise successMsg="频道创建成功,频道号[channelId]。你现在可以邀请您的好友加入。">
 				<dispatcher-chain>
 					<dispatcher>
 						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.BarrageDispatcher</dispatcher-type>
-						<dispatcher-para><![CDATA[创建频道 [title] [password]]]></dispatcher-para>
+						<dispatcher-para><![CDATA[[title] [password]]]></dispatcher-para>
 					</dispatcher>
 				</dispatcher-chain>
 				<processor>com.barrage.web.server.processer.processeres.CreateChannelProcesser</processor>
@@ -19,11 +29,22 @@
 	<service>
 		<service-name>joinChannel</service-name>
 		<step no="1">
-			<choise successMsg="频道加入成功,请随意发言">
+			<choise successMsg="请输入以下格式来完成创建频道：[频道号]空格[频道密码]。 \r\n 如：3011 pass1314" toNo="2">
+				<dispatcher-chain>
+					<dispatcher>
+						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.KeyWordDispatcher</dispatcher-type>
+						<dispatcher-para><![CDATA[V001_JOIN_CHANNEL,加入频道]]></dispatcher-para>
+					</dispatcher>
+				</dispatcher-chain>
+				<processor>com.barrage.web.server.processer.processeres.JoinChannelProcesser</processor>
+			</choise>
+		</step>
+		<step no="2">
+			<choise successMsg="频道加入成功。你现在可以在微信频道自由发言了。">
 				<dispatcher-chain>
 					<dispatcher>
 						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.BarrageDispatcher</dispatcher-type>
-						<dispatcher-para><![CDATA[加入频道 [no] [password]]]></dispatcher-para>
+						<dispatcher-para><![CDATA[[no] [password]]]></dispatcher-para>
 					</dispatcher>
 				</dispatcher-chain>
 				<processor>com.barrage.web.server.processer.processeres.JoinChannelProcesser</processor>
@@ -37,8 +58,8 @@
 			<choise successMsg="是否确认退出频道,确认请回复'是'" toNo="2">
 				<dispatcher-chain>
 					<dispatcher>
-						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.BarrageDispatcher</dispatcher-type>
-						<dispatcher-para><![CDATA[退出频道]]></dispatcher-para>
+						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.KeyWordDispatcher</dispatcher-type>
+						<dispatcher-para><![CDATA[V001_QUIT_CHANNEL,退出频道]]></dispatcher-para>
 					</dispatcher>
 				</dispatcher-chain>
 			</choise>
@@ -52,6 +73,20 @@
 					</dispatcher>
 				</dispatcher-chain>
 				<processor>com.barrage.web.server.processer.processeres.QuitChannelProcesser</processor>
+			</choise>
+		</step>
+	</service>
+	
+	<service>
+		<service-name>help</service-name>
+		<step no="1">
+			<choise successMsg="欢迎您加入本公众账号,您可以使用菜单栏或者手工输入以下命令,来使用本账号的功能。\r\n 1.创建频道\r\n 2.加入频道\r\n 3.退出频道">
+				<dispatcher-chain>
+					<dispatcher>
+						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.KeyWordDispatcher</dispatcher-type>
+						<dispatcher-para><![CDATA[V001_COMMAND_LIST,命令说明,帮助,help]]></dispatcher-para>
+					</dispatcher>
+				</dispatcher-chain>
 			</choise>
 		</step>
 	</service>

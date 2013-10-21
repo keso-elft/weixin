@@ -3,9 +3,7 @@ package com.barrage.web.output.servlet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -19,20 +17,28 @@ import org.apache.catalina.CometEvent;
 import org.apache.catalina.CometProcessor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.barrage.model.Channel;
+import com.barrage.service.ChannelService;
 import com.barrage.web.output.SendMsg;
 
 public class ChannelCometServlet extends HttpServlet implements CometProcessor {
 
-	protected static Logger log = LogManager.getLogger("weixinOutput");
+	protected Logger log = LogManager.getLogger("weixinOutput");
 
 	private static final long serialVersionUID = -3667180332947986301L;
 
 	// <频道号,List<长连接>>
-	protected static Map<Long, List<HttpServletResponse>> connections = new HashMap<Long, List<HttpServletResponse>>();
+	protected static Map<Long, Map<String, HttpServletResponse>> connections = new HashMap<Long, Map<String, HttpServletResponse>>();
 
 	// 消息推送线程
 	protected static ChannelCometSender channelSender = null;
+
+	ApplicationContext context;
+
+	private ChannelService channelService;
 
 	public void init() throws ServletException {
 		// 启动消息推送线程
@@ -41,6 +47,9 @@ public class ChannelCometServlet extends HttpServlet implements CometProcessor {
 				+ getServletContext().getContextPath() + "]");
 		channelSenderThread.setDaemon(true);
 		channelSenderThread.start();
+
+		context = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		channelService = (ChannelService) context.getBean("channelService");
 	}
 
 	public void destroy() {
@@ -55,8 +64,10 @@ public class ChannelCometServlet extends HttpServlet implements CometProcessor {
 
 		// 频道号
 		Long channelId = null;
+		String password = null;
 		try {
 			channelId = Long.parseLong(request.getParameter("channelId"));
+			password = request.getParameter("password");
 		} catch (Exception e) {
 		}
 		if (channelId == null) {
@@ -65,28 +76,55 @@ public class ChannelCometServlet extends HttpServlet implements CometProcessor {
 
 		if (event.getEventType() == CometEvent.EventType.BEGIN) {
 
-			log("Begin for session: " + request.getSession(true).getId());
+			// 判断登录信息
+			Channel channel = channelService.findChannelById(channelId);
+			if (channel != null && channel.getPassword().equals(password)) {
+				log("[ChannelCometServlet] login success");
+			} else {
+				log("[ChannelCometServlet] login fail");
+				return;
+			}
+
+			log("[ChannelCometServlet] New session: " + request.getSession(true).getId());
 			event.setTimeout(Integer.MAX_VALUE);
 
-			join(channelId, response);
+			join(channelId, request.getSession(true).getId(), response);
+
+			// TODO IE8没问题,FF有问题
+			// 欢迎信息
+			PrintWriter writer = response.getWriter();
+
+			writer.println("<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">");
+			writer.println("<html><head><script type=\"text/javascript\">var comet = window.parent.comet;</script></head><body>");
+			writer.println("<script type=\"text/javascript\">");
+			writer.println("var comet = window.parent.comet;");
+			writer.println("</script>");
+			writer.print("<script type=\"text/javascript\">");
+			writer.println("comet.newMessage('Welcome to Channel 1 radio!');");
+			writer.print("</script>");
+			writer.flush();
 
 		} else if (event.getEventType() == CometEvent.EventType.ERROR) {
 
-			log("Error for session: " + request.getSession(true).getId());
+			log("[ChannelCometServlet] Error session: " + request.getSession(true).getId());
 
-			quit(channelId, response);
+			quit(channelId, request.getSession(true).getId());
 			event.close();
 
 		} else if (event.getEventType() == CometEvent.EventType.END) {
 
-			log("End for session: " + request.getSession(true).getId());
+			// TODO 退出时会执行两次
+			log("[ChannelCometServlet] End session: " + request.getSession(true).getId());
 
-			quit(channelId, response);
+			quit(channelId, request.getSession(true).getId());
 			PrintWriter writer = response.getWriter();
 			writer.println("</body></html>");
+			writer.flush();
 			event.close();
 
 		} else if (event.getEventType() == CometEvent.EventType.READ) {
+
+			log("[ChannelCometServlet] Read session: " + request.getSession(true).getId());
 
 			InputStream is = request.getInputStream();
 			byte[] buf = new byte[512];
@@ -102,25 +140,24 @@ public class ChannelCometServlet extends HttpServlet implements CometProcessor {
 		}
 	}
 
-	private void join(Long channelId, HttpServletResponse response) {
-
-		List<HttpServletResponse> temp = connections.get(channelId);
+	private void join(Long channelId, String sessionId, HttpServletResponse response) {
+		Map<String, HttpServletResponse> temp = connections.get(channelId);
 		if (temp == null) {
-			temp = new ArrayList<HttpServletResponse>();
+			temp = new HashMap<String, HttpServletResponse>();
 		}
-		temp.add(response);
+		temp.put(sessionId, response);
 		synchronized (connections) {
 			connections.put(channelId, temp);
 		}
 	}
 
-	private void quit(Long channelId, HttpServletResponse response) {
+	private void quit(Long channelId, String sessionId) {
 
-		List<HttpServletResponse> temp = connections.get(channelId);
+		Map<String, HttpServletResponse> temp = connections.get(channelId);
 		if (temp == null) {
 			return;
 		}
-		temp.remove(response);
+		temp.remove(sessionId);
 
 		if (temp.isEmpty()) {
 			synchronized (connections) {
@@ -183,12 +220,13 @@ public class ChannelCometServlet extends HttpServlet implements CometProcessor {
 					synchronized (messages) {
 
 						Long channelId = msg.getChannelId();
-						List<HttpServletResponse> responses = connections.get(channelId);
+						Map<String, HttpServletResponse> responses = connections.get(channelId);
 
 						// 推送消息队列中的消息
-						log("Send message: " + msg.getContent() + " to everyone in Channel " + channelId + ".");
 						if (responses != null && !responses.isEmpty()) {
-							for (HttpServletResponse response : responses) {
+							log("Send message: '" + msg.getContent() + "' to everyone in Channel " + channelId + ".");
+
+							for (HttpServletResponse response : responses.values()) {
 								try {
 									PrintWriter writer = response.getWriter();
 									writer.print("<script type=\"text/javascript\">");
@@ -199,6 +237,8 @@ public class ChannelCometServlet extends HttpServlet implements CometProcessor {
 									log("IOExeption execute command", e);
 								}
 							}
+						} else {
+							log.info("[ChannelCometServlet]消息发送:目前频道 " + channelId + " 无网页登陆用户");
 						}
 					}
 				}

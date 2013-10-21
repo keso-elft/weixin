@@ -15,6 +15,5 @@
 		<property name="defaultAutoCommit" value="true"/>
 		<property name="removeAbandoned" value="true"/>
 		<property name="removeAbandonedTimeout" value="60"/>
-		<property name="rewriteBatchedStatements" value="true"/>
 	</bean>
 </beans>
