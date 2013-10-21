@@ -28,14 +28,14 @@ public class MenuCreateTask {
 
 	public void run() {
 
-		String file_menu = getFileMenu();
-
-		System.out.print(file_menu);
-
-		// if (!getUrlMenu().equalsIgnoreCase(file_menu)) {
-		// deleteMenu();
-		// createMenu(file_menu);
-		// }
+//		String file_menu = getFileMenu();
+//
+//		System.out.print(file_menu);
+//
+//		 if (!getUrlMenu().equalsIgnoreCase(file_menu)) {
+//		 deleteMenu();
+//		 createMenu(file_menu);
+//		 }
 
 	}
 
@@ -92,7 +92,7 @@ public class MenuCreateTask {
 
 	private void deleteMenu() {
 		try {
-			Response response = Jsoup.connect(GET_URL).ignoreContentType(true).method(Method.POST).execute();
+			Response response = Jsoup.connect(DELETE_URL).ignoreContentType(true).method(Method.POST).execute();
 			log.info(response.body());
 		} catch (Exception e) {
 			log.error("[MenuCreateTask] deleteMenu Error:", e);
@@ -101,7 +101,7 @@ public class MenuCreateTask {
 
 	private void createMenu(String menu) {
 		try {
-			Response response = Jsoup.connect(GET_URL).ignoreContentType(true).method(Method.POST).data(menu).execute();
+			Response response = Jsoup.connect(CREATE_URL).ignoreContentType(true).method(Method.POST).data("body",menu).execute();
 			log.info(response.body());
 		} catch (Exception e) {
 			log.error("[MenuCreateTask] createMenu Error:", e);

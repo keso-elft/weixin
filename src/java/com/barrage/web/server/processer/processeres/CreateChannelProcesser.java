@@ -32,11 +32,11 @@ public class CreateChannelProcesser implements Processer {
 		}
 
 		String[] paras = content.split(" ");
-		if (paras != null && paras.length > 1) {
+		if (paras != null && paras.length > 0) {
 			String password = null;
-			if (paras.length > 2)
-				password = paras[2];
-			Long channelId = channelService.createChannel(fan.getId(), paras[1], password);
+			if (paras.length > 1)
+				password = paras[1];
+			Long channelId = channelService.createChannel(fan.getId(), paras[0], password);
 			if (channelId.longValue() == -1) {
 				return result.error("创建失败");
 			}
