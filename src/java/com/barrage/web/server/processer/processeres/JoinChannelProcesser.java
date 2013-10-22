@@ -1,5 +1,7 @@
 package com.barrage.web.server.processer.processeres;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.barrage.model.Channel;
@@ -10,6 +12,8 @@ import com.barrage.web.server.model.ProcessResult;
 import com.barrage.web.server.processer.Processer;
 
 public class JoinChannelProcesser implements Processer {
+
+	protected Logger log = LogManager.getLogger("weixinServer");
 
 	ChannelService channelService;
 
@@ -27,11 +31,13 @@ public class JoinChannelProcesser implements Processer {
 		String content = msg.getContent();
 		String fromUserName = msg.getFromUserName();
 
+		log.info("[JoinChannelProcesser]" + content);
+
 		String[] paras = content.split(" ");
-		if (paras != null && paras.length > 1) {
+		if (paras != null && paras.length > 0) {
 			Long id;
 			try {
-				id = new Long(paras[1]);
+				id = new Long(paras[0]);
 			} catch (Exception e) {
 				return result.error("频道号错误");
 			}
@@ -40,12 +46,15 @@ public class JoinChannelProcesser implements Processer {
 				return result.error("无此频道");
 			}
 			if (channel.getPassword() != null && channel.getPassword().length() != 0) {
-				if (paras.length == 2) {
+				if (paras.length == 1) {
 					return result.error("频道需要密码加入");
 				}
-				if (paras.length > 2 && !channel.getPassword().equals(paras[2])) {
+				if (paras.length > 1 && !channel.getPassword().equals(paras[1])) {
 					return result.error("密码错误");
 				}
+			}
+			if (userChannelRelationService.getJoinChannelId(fromUserName) != null) {
+				return result.error("请先退出当前频道");
 			}
 
 			userChannelRelationService.join(fromUserName, channel.getId());

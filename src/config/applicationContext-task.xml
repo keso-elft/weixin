@@ -7,7 +7,10 @@
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
+				<!-- 
 				<ref local="menuCreateJob" />
+				<ref local="getAccessTokenJob" />
+				-->
 			</list> 
 		</property>
 	</bean>
@@ -21,6 +24,19 @@
 				<property name="targetMethod" value="run" />
 			</bean>
 		</property>
-		<property name="cronExpression" value="0 0/1 * * * ?" />
+		<property name="cronExpression" value="0 0 0/1 * * ?" />
+	</bean>
+	
+	<bean name="getAccessTokenTask" class="com.barrage.task.GetAccessTokenTask">
+	</bean>
+	
+	<bean id="getAccessTokenJob" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="getAccessTokenTask" />
+				<property name="targetMethod" value="run" />
+			</bean>
+		</property>
+		<property name="cronExpression" value="0 0/10 * * * ?" />
 	</bean>
 </beans>

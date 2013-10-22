@@ -4,7 +4,7 @@
 	<service>
 		<service-name>createChannel</service-name>
 		<step no="1">
-			<choise successMsg="请输入以下格式来完成创建频道：[频道名称]空格[频道密码]。 \r\n 如：足球 1314" toNo="2">
+			<choise successMsg="请输入以下格式来完成创建频道：[频道名称]空格[频道密码]。 如：足球 1314" toNo="2">
 				<dispatcher-chain>
 					<dispatcher>
 						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.KeyWordDispatcher</dispatcher-type>
@@ -14,7 +14,7 @@
 			</choise>
 		</step>
 		<step no="2">
-			<choise successMsg="频道创建成功,频道号[channelId]。你现在可以邀请您的好友加入。">
+			<choise successMsg="频道创建成功,频道号[content]。你现在可以邀请您的好友加入。">
 				<dispatcher-chain>
 					<dispatcher>
 						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.BarrageDispatcher</dispatcher-type>
@@ -29,14 +29,13 @@
 	<service>
 		<service-name>joinChannel</service-name>
 		<step no="1">
-			<choise successMsg="请输入以下格式来完成创建频道：[频道号]空格[频道密码]。 \r\n 如：3011 pass1314" toNo="2">
+			<choise successMsg="请输入以下格式来完成创建频道：[频道号]空格[频道密码]。如：3011 pass1314" toNo="2">
 				<dispatcher-chain>
 					<dispatcher>
 						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.KeyWordDispatcher</dispatcher-type>
 						<dispatcher-para><![CDATA[V001_JOIN_CHANNEL,加入频道]]></dispatcher-para>
 					</dispatcher>
 				</dispatcher-chain>
-				<processor>com.barrage.web.server.processer.processeres.JoinChannelProcesser</processor>
 			</choise>
 		</step>
 		<step no="2">
@@ -80,7 +79,7 @@
 	<service>
 		<service-name>help</service-name>
 		<step no="1">
-			<choise successMsg="欢迎您加入本公众账号,您可以使用菜单栏或者手工输入以下命令,来使用本账号的功能。\r\n 1.创建频道\r\n 2.加入频道\r\n 3.退出频道">
+			<choise successMsg="欢迎您加入本公众账号,您可以使用菜单栏或者手工输入以下命令,来使用本账号的功能。1.创建频道 2.加入频道 3.退出频道">
 				<dispatcher-chain>
 					<dispatcher>
 						<dispatcher-type>com.barrage.web.server.dispatch.dispatchers.KeyWordDispatcher</dispatcher-type>

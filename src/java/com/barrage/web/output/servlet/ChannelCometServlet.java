@@ -62,6 +62,11 @@ public class ChannelCometServlet extends HttpServlet implements CometProcessor {
 		HttpServletRequest request = event.getHttpServletRequest();
 		HttpServletResponse response = event.getHttpServletResponse();
 
+		response.setHeader("Cache-Control", "private");
+		response.setHeader("Pragma", "no-cache");
+		response.setContentType("text/html;charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
+
 		// 频道号
 		Long channelId = null;
 		String password = null;

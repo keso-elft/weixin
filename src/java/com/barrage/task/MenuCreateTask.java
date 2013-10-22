@@ -18,30 +18,31 @@ public class MenuCreateTask {
 
 	protected Logger log = LogManager.getLogger("weixinServer");
 
-	protected String GET_URL = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=" + Constants.TOKEN;
+	protected String GET_URL = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=";
 
-	protected String DELETE_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=" + Constants.TOKEN;
+	protected String DELETE_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=";
 
-	protected String CREATE_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + Constants.TOKEN;
+	protected String CREATE_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
 
 	protected String FILE_URL = "menu.txt";
 
 	public void run() {
 
-//		String file_menu = getFileMenu();
-//
-//		System.out.print(file_menu);
+		if (Constants.ACCESS_TOKEN != null) {
+			String token = Constants.ACCESS_TOKEN.getAccess_token();
 
-		// if (!getUrlMenu().equalsIgnoreCase(file_menu)) {
-		// deleteMenu();
-		// createMenu(file_menu);
-		// }
+			String file_menu = getFileMenu();
 
+			if (!getUrlMenu(token).equalsIgnoreCase(file_menu)) {
+				deleteMenu(token);
+				createMenu(token, file_menu);
+			}
+		}
 	}
 
-	private String getUrlMenu() {
+	private String getUrlMenu(String token) {
 		try {
-			Response response = Jsoup.connect(GET_URL).ignoreContentType(true).method(Method.GET).execute();
+			Response response = Jsoup.connect(GET_URL + token).ignoreContentType(true).method(Method.GET).execute();
 			return response.body();
 		} catch (Exception e) {
 			log.error("[MenuCreateTask] getUrlMenu Error:", e);
@@ -90,18 +91,19 @@ public class MenuCreateTask {
 		}
 	}
 
-	private void deleteMenu() {
+	private void deleteMenu(String token) {
 		try {
-			Response response = Jsoup.connect(GET_URL).ignoreContentType(true).method(Method.POST).execute();
+			Response response = Jsoup.connect(DELETE_URL + token).ignoreContentType(true).method(Method.POST).execute();
 			log.info(response.body());
 		} catch (Exception e) {
 			log.error("[MenuCreateTask] deleteMenu Error:", e);
 		}
 	}
 
-	private void createMenu(String menu) {
+	private void createMenu(String token, String menu) {
 		try {
-			Response response = Jsoup.connect(GET_URL).ignoreContentType(true).method(Method.POST).data(menu).execute();
+			Response response = Jsoup.connect(CREATE_URL + token).ignoreContentType(true).method(Method.POST)
+					.data("body", menu).execute();
 			log.info(response.body());
 		} catch (Exception e) {
 			log.error("[MenuCreateTask] createMenu Error:", e);

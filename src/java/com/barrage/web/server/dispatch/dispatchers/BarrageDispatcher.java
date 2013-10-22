@@ -62,10 +62,10 @@ public class BarrageDispatcher implements Dispatcher {
 
 	public static void main(String[] args) {
 		BarrageDispatcher filter = new BarrageDispatcher();
-		filter.setPara("创建频道 [title] [password]");
+		filter.setPara("[no] [password]");
 
 		InMessage msg = new InMessage();
-		msg.setContent("创建频道 aa abcd");
+		msg.setContent("");
 
 		System.out.println(filter.doDispatch(msg));
 	}

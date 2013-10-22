@@ -43,7 +43,7 @@ body {
 					<input type="text" id="channelId" placeholder="请输入频道ID" autofocus> <span class="help-inline"></span>
 				</div>
 				<div class="controls">
-					<input type="password" id="password" placeholder="请输入频道密码" autofocus> <span class="help-inline"></span>
+					<input type="password" id="password" placeholder="请输入频道密码"> <span class="help-inline"></span>
 				</div>
 			</div>
 		</div>
@@ -73,7 +73,6 @@ body {
 				</fieldset>
 			</div>
 		</div>
-		<hr>
 	</div>
 	<div class="navbar navbar-fixed-bottom">
 		<div class="navbar-inner">
@@ -86,8 +85,7 @@ body {
 	</div>
 	<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript">
-		//var server = 'http://127.0.0.1:8080/weixin/comet?channelId=1';
-		var server = 'http://127.0.0.1:8080/weixin/comet';
+		var server = 'comet';
 
 		var comet = {
 			connection : false,
@@ -110,7 +108,8 @@ body {
 					comet.connection.parentWindow.comet = comet;
 					comet.iframediv.innerHTML = "<iframe id='comet_iframe' src='"+address+"'></iframe>";
 
-				} else if (navigator.appVersion.indexOf("KHTML") != -1) {
+				} else if (navigator.appVersion.indexOf("KHTML") != -1
+						|| navigator.userAgent.indexOf('Opera') >= 0) {
 					comet.connection = document.createElement('iframe');
 					comet.connection.setAttribute('id', 'comet_iframe');
 					comet.connection.setAttribute('src', address);
@@ -132,14 +131,20 @@ body {
 						display = 'none';
 					}
 					comet.iframediv = document.createElement('iframe');
-					comet.iframediv.setAttribute('src', address);
+					comet.iframediv.setAttribute('onLoad',
+							'comet.frameDisconnected()');
+					comet.iframediv.setAttribute('src', server);
 					comet.connection.appendChild(comet.iframediv);
 					document.body.appendChild(comet.connection);
 				}
 
 				return comet.connection;
 			},
-
+			frameDisconnected : function() {
+				comet.connection = false;
+				$('#comet_iframe').remove();
+				//setTimeout("chat.showConnect();",100);
+			},
 			//添加正常消息
 			newMessage : function(data) {
 				writeToChatLog(data, 'text-info');
@@ -149,6 +154,7 @@ body {
 			onUnload : function() {
 				if (comet.connection) {
 					comet.connection = false;
+					$('#comet_iframe').remove();
 				}
 			}
 		}//comet end
