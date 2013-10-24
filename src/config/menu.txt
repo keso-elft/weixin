@@ -6,12 +6,12 @@
         {
             "type":"view",
             "name":"我要发起",
-            "url":"http://aaa/arrangelist.jsp"
+            "url":"http://aaa/weixin/arrangelist.jsp"
         },
         {
             "type":"view",
             "name":"我的参与",
-            "url":"http://aaa/joinlist.jsp"
+            "url":"http://aaa/weixin/joinlist.jsp"
         }]
     },
     {

@@ -2,7 +2,7 @@
 <html lang="cn">
 <head>
 <meta charset="utf-8">
-<title>公众平台 · 主页</title>
+<title>公众平台 · 发起菜单</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="owen">
@@ -26,9 +26,9 @@
 				<a class="brand" href="index.jsp">Keso.elft</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li class="active"><a href="index.jsp">主页</a></li>
+						<li class=""><a href="index.jsp">主页</a></li>
 						<li class=""><a href="channel.jsp">频道</a></li>
-						<li class=""><a href="arrange.jsp">发起</a></li>
+						<li class="active"><a href="arrange.jsp">发起</a></li>
 						<li class=""><a href="#about">关于</a></li>
 						<li class=""><a href="#contact">联系我</a></li>
 					</ul>
@@ -36,10 +36,19 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<!-- 主界面 -->
 	<div class="container-fluid">
 		<div class="row-fluid">
+			<div class="bs-docs-sidebar">
+				<center>
+					<ul class="nav nav-list bs-docs-sidenav">
+						<li><a href="./pages/vote.jsp"><i class="icon-chevron-right"></i> 发起 投票</a></li>
+						<li><a href="./pages/party.jsp"><i class="icon-chevron-right"></i> 发起 聚会</a></li>
+						<li><a href="./pages/greetingcard.jsp"><i class="icon-chevron-right"></i> 发起 贺卡</a></li>
+					</ul>
+				</center>
+			</div>
 		</div>
 	</div>
 	<footer class="footer">
@@ -48,3 +57,4 @@
 		</div>
 	</footer>
 </body>
+</html>
